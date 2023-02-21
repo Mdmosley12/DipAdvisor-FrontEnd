@@ -1,6 +1,8 @@
 import React from 'react';
 import { ImageBackground, StyleSheet, View, Image, Text, TouchableOpacity} from 'react-native';
 
+
+
 function WelcomeScreen({ navigation }) {
     return (
         <ImageBackground 
