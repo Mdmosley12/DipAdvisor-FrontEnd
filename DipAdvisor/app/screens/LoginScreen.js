@@ -1,16 +1,30 @@
-import React from 'react';
-import { View, Text, StyleSheet, ImageBackground, TextInput, Button } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, ImageBackground, TextInput, Button, KeyboardAvoidingView } from 'react-native';
 import { Formik } from 'formik';
 import { CheckBox } from 'react-native-elements';
+import { auth } from '../assets/firebase'
 
 function LoginScreen({ navigation }) {
 
     const handleLogin = (values) => {
-        if (values.username === 'Admin' && values.isChecked === true) {
-            console.log('hello')
-            navigation.navigate('HomeScreen')
+        if (values.isChecked === true) {
+            auth.signInWithEmailAndPassword(values.email, values.password)
+            .then(userCredentials => {
+                const user = userCredentials.user
+                console.log('Logged in with:', user.email)
+            })
+            .catch(error => alert(error.message))
         }
     }
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(user => {
+            if (user) {
+                navigation.navigate("HomeScreen")
+            }
+        })
+        return unsubscribe
+    }, [])
 
 
     return (
@@ -18,21 +32,20 @@ function LoginScreen({ navigation }) {
           style={styles.background}
           source={require("../assets/WelcomeScreenImg.jpg")}
           >
-            <Formik initialValues={{ username: '', password: '', isChecked: false }} onSubmit={(values) => {handleLogin(values)}}>
+            <KeyboardAvoidingView behavior="padding">
+            <Formik initialValues={{ email: '', password: '', isChecked: false }} onSubmit={(values) => {handleLogin(values)}}>
               {({ handleChange, handleBlur, handleSubmit, values, setFieldValue }) => (
                 <View style={styles.loginContainer}>
-                    <Text style={styles.label}>Username:</Text>
+                    <Text style={styles.label}>Email:</Text>
                     <TextInput
-                       style={styles.usernameInput}
-                       placeholder={'Admin'}
-                       onChangeText={handleChange('username')}
-                       onBlur={handleBlur('username')}
-                       value={values.username}
+                       style={styles.emailInput}
+                       onChangeText={handleChange('email')}
+                       onBlur={handleBlur('email')}
+                       value={values.email}
                     />
                     <Text style={styles.label}>Password:</Text>
                     <TextInput
                        style={styles.passwordInput}
-                       placeholder={'Not required at this time'}
                        secureTextEntry
                        onChangeText={handleChange('password')}
                        onBlur={handleBlur('password')}
@@ -49,6 +62,7 @@ function LoginScreen({ navigation }) {
                 </View>
               )}
             </Formik>
+            </KeyboardAvoidingView>
         </ImageBackground>
     );
 }
@@ -62,9 +76,10 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     loginContainer: {
+        // backgroundColor: 'blue',
         borderRadius: 8,
         width: '80%',
-        height: '80%',
+        height: 450,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -77,11 +92,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingVertical: 20,
         paddingHorizontal: 20,
-        marginTop: 110,
+        marginTop: 130,
     },
-    usernameInput: {
+    emailInput: {
         height: 40,
-        width: '100%',
+        width: 280,
         paddingHorizontal: 10,
         borderColor: '#ccc',
         borderWidth: 1,
@@ -90,7 +105,7 @@ const styles = StyleSheet.create({
     },
     passwordInput: {
         height: 40,
-        width: '100%',
+        width: 280,
         paddingHorizontal: 10,
         borderColor: '#ccc',
         borderWidth: 1,
@@ -108,6 +123,6 @@ const styles = StyleSheet.create({
     disclaimer: {
         backgroundColor: 'white',
         marginBottom: 10,
-        // marginTop: 50,
+        width: 280,
     },
 })
