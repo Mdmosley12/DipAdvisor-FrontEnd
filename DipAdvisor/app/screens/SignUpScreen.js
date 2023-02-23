@@ -1,30 +1,29 @@
+import { Formik } from "formik";
 import React, { useEffect } from "react";
 import {
+  ImageBackground,
+  KeyboardAvoidingView,
+  StyleSheet,
   View,
   Text,
-  StyleSheet,
-  ImageBackground,
   TextInput,
   Button,
-  KeyboardAvoidingView,
 } from "react-native";
-import { Formik } from "formik";
-import { CheckBox } from "react-native-elements";
 import { auth } from "../assets/firebase";
-import { UserContext } from "../contexts/UserContext";
-import { useContext } from "react";
+import { CheckBox } from "react-native-elements";
 
-function LoginScreen({ navigation }) {
-  const userValue = useContext(UserContext);
-
-  const handleLogin = (values) => {
+function SignUpScreen({ navigation }) {
+  const handleSignUp = (values) => {
     if (values.isChecked === true) {
       auth
-        .signInWithEmailAndPassword(values.email, values.password)
+        .createUserWithEmailAndPassword(values.email, values.password)
         .then((userCredentials) => {
           const user = userCredentials.user;
-          userValue.setUser(user.email);
-          console.log("Logged in with:", user.email);
+          console.log("Signed up with:", user.email);
+          user.updateProfile({
+            displayName: values.username,
+          });
+          console.log(user.username);
         })
         .catch((error) => alert(error.message));
     }
@@ -46,9 +45,14 @@ function LoginScreen({ navigation }) {
     >
       <KeyboardAvoidingView behavior="padding">
         <Formik
-          initialValues={{ email: "", password: "", isChecked: false }}
+          initialValues={{
+            email: "",
+            displayName: "",
+            password: "",
+            isChecked: false,
+          }}
           onSubmit={(values) => {
-            handleLogin(values);
+            handleSignUp(values);
           }}
         >
           {({
@@ -65,6 +69,13 @@ function LoginScreen({ navigation }) {
                 onChangeText={handleChange("email")}
                 onBlur={handleBlur("email")}
                 value={values.email}
+              />
+              <Text style={styles.label}>Display Name:</Text>
+              <TextInput
+                style={styles.displayNameInput}
+                onChangeText={handleChange("displayName")}
+                onBlur={handleBlur("displayName")}
+                value={values.displayName}
               />
               <Text style={styles.label}>Password:</Text>
               <TextInput
@@ -89,7 +100,7 @@ function LoginScreen({ navigation }) {
               <Button
                 style={styles.button}
                 onPress={handleSubmit}
-                title="Log In"
+                title="Sign Up"
               />
             </View>
           )}
@@ -99,7 +110,7 @@ function LoginScreen({ navigation }) {
   );
 }
 
-export default LoginScreen;
+export default SignUpScreen;
 
 const styles = StyleSheet.create({
   background: {
@@ -126,6 +137,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginTop: 125,
   },
+  label: {
+    alignSelf: "flex-start",
+    marginBottom: 5,
+    fontSize: 20,
+    fontWeight: "bold",
+  },
   emailInput: {
     height: 40,
     width: 280,
@@ -146,19 +163,23 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 12,
   },
-  label: {
-    alignSelf: "flex-start",
-    marginBottom: 5,
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  button: {
-    marginTop: 20,
+  displayNameInput: {
+    height: 40,
+    width: 280,
+    paddingHorizontal: 10,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    marginBottom: 20,
+    backgroundColor: "white",
+    borderRadius: 12,
   },
   disclaimer: {
-    // backgroundColor: 'white',
+    backgroundColor: "white",
     marginBottom: 10,
     width: 280,
     fontWeight: "bold",
+  },
+  checkbox: {
+    // borderRadius: 12,
   },
 });

@@ -18,7 +18,7 @@ function WelcomeScreen({ navigation }) {
                 <Text style={styles.loginText}>Login</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.registerButton} onPress={() => alert('This would send you to the signup page')}>
+            <TouchableOpacity style={styles.registerButton} onPress={() => navigation.navigate('SignUpScreen')}>
             <View>
                 <Text style={styles.signupText}>SignUp</Text>
             </View>

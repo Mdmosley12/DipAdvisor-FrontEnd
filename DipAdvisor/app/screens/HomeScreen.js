@@ -1,17 +1,59 @@
+import React, { useEffect, useState } from "react";
+import { UserContext } from "../contexts/UserContext";
+import { useContext } from "react";
+import { auth } from "../assets/firebase";
+import { getTopLocations } from "../utils/api.utils";
 import { Ionicons } from "@expo/vector-icons";
 import { Formik } from "formik";
-import React from "react";
+
 import {
   Keyboard,
   StyleSheet,
   Text,
+  Image,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 import { auth } from "../assets/firebase";
 
-const HomeScreen = ({ navigation }) => {
+// const HomeScreen = ({ navigation }) => {
+  
+
+
+const PopularSpotsBox = ({ popularSpots }) => {
+  return (
+    <View>
+      <Text>Most popular spots:</Text>
+      {popularSpots.map((spot) => {
+        return <PopularSpotBox spot={spot} key={spot._id} />;
+      })}
+    </View>
+  );
+};
+
+const PopularSpotBox = ({ spot }) => {
+  return (
+    <View>
+      <Text>{spot.location_name}</Text>
+      <Image
+        style={{ width: 50, height: 50 }}
+        source={{ uri: spot.image_urls[0] }}
+      />
+      <Text> Votes: {spot.votes}</Text>
+    </View>
+  );
+};
+
+const HomeScreen = ({navigation},props) => {
+  const userValue = useContext(UserContext);
+  const [popularSpots, setPopularSpots] = useState([]);
+  useEffect(() => {
+    getTopLocations().then((data) => {
+      setPopularSpots(data);
+    });
+  }, []);
+
   const handleGetLocation = (values) => {
     navigation.push("SingleLocationScreen", values);
   };
@@ -43,12 +85,18 @@ const HomeScreen = ({ navigation }) => {
               />
             </TouchableOpacity>
           </View>
-        )}
+      )}
       </Formik>
-      <Text style={styles.heading}>Welcome, {auth.currentUser?.email}</Text>
+      
+      <View style={styles.background}>
+        <Text style={styles.heading}>Welcome {auth.currentUser?.email}</Text>
+        <Text>Where's today's dip {userValue.user}?</Text>
+        <PopularSpotsBox popularSpots={popularSpots} />
+    </View>
+    
     </View>
   );
-};
+        }
 
 const styles = StyleSheet.create({
   container: {
@@ -79,6 +127,12 @@ const styles = StyleSheet.create({
   icon: {
     marginLeft: 10,
   },
+  background: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+}
 });
 
 export default HomeScreen;
+
