@@ -1,12 +1,14 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
+import { SafeAreaView, StyleSheet } from "react-native";
+import { UserProvider } from "./app/contexts/UserContext";
+
 import WelcomeScreen from "./app/screens/WelcomeScreen";
 import LoginScreen from "./app/screens/LoginScreen";
-import { SafeAreaView, StyleSheet } from "react-native";
 import HomeScreen from "./app/screens/HomeScreen";
 import SignUpScreen from "./app/screens/SignUpScreen";
-import { UserProvider } from "./app/contexts/UserContext";
+import NavBar from "./app/screens/NavBar";
 
 const Stack = createStackNavigator();
 
@@ -36,7 +38,12 @@ export default function App() {
               component={HomeScreen}
               options={{ headerShown: false }}
             />
+            {/* <Stack.Screen name="NavBar" component={NavBar} /> */}
           </Stack.Navigator>
+        </NavigationContainer>
+
+        <NavigationContainer>
+          <NavBar />
         </NavigationContainer>
       </UserProvider>
     </SafeAreaView>
