@@ -5,7 +5,7 @@ import { auth } from "../assets/firebase";
 function HomeScreen(props) {
   return (
     <View style={styles.background}>
-      <Text>Welcome {auth.currentUser?.email}</Text>
+      <Text>Welcome {auth.currentUser?.displayName}</Text>
     </View>
   );
 }
