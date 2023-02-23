@@ -1,15 +1,9 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import {
-  AddLocationNavigator,
-  MainStackNavigator,
-  MapNavigator,
-} from "./ScreenNavigator";
-import HomeScreen from "../app/screens/HomeScreen";
+import { MainStackNavigator } from "./ScreenNavigator";
 import MapViewScreen from "../app/screens/MapViewScreen";
-import { Button } from "react-native-elements";
 import AddLocationScreen from "../app/screens/AddLocationScreen";
 
 function NavBar(props) {
@@ -19,18 +13,18 @@ function NavBar(props) {
     <Tab.Navigator style={styles.container}>
       <Tab.Screen
         name="View on Maps"
-        component={MapNavigator}
-        // options={{ headerShown: false }}
+        component={MapViewScreen}
+        options={{ headerShown: false }}
       />
       <Tab.Screen
         name="Home"
         component={MainStackNavigator}
-        // options={{ headerShown: false }}
+        options={{ headerShown: false }}
       />
       <Tab.Screen
         name="Add Swim Spot"
-        component={AddLocationNavigator}
-        // options={{ headerShown: false }}
+        component={AddLocationScreen}
+        options={{ headerShown: false }}
       />
     </Tab.Navigator>
   );

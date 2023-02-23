@@ -7,7 +7,6 @@ import MapViewScreen from "../app/screens/MapViewScreen";
 import AddLocationScreen from "../app/screens/AddLocationScreen";
 
 import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaView, StyleSheet } from "react-native";
 import { UserProvider } from "../app/contexts/UserContext";
 
@@ -66,7 +65,7 @@ const MapNavigator = () => {
       <UserProvider>
         <Stack.Navigator>
           <Stack.Screen
-            name="View on Maps"
+            name="View all map locations"
             component={MapViewScreen}
             options={{ headerShown: false }}
           />

@@ -4,6 +4,12 @@ function MapViewScreen(props) {
   return (
     <SafeAreaView style={styles.container}>
       <Text>Map holder</Text>
+      <Text>Map holder</Text>
+      <Text>Map holder</Text>
+      <Text>Map holder</Text>
+      <Text>Map holder</Text>
+      <Text>Map holder</Text>
+      <Text>Map holder</Text>
     </SafeAreaView>
   );
 }
