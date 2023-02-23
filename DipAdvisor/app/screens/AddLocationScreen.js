@@ -10,13 +10,25 @@ import {
 import { Formik } from "formik";
 import { Switch } from "react-native";
 import { auth } from "../assets/firebase";
+import { addLocation } from "../utils/api.utils";
 
-function AddLocationScreen(props) {
+function AddLocationScreen({ navigation }) {
+  const handlePost = (values) => {
+    values.created_by = auth.currentUser.email;
+    addLocation(values).then(() => {
+      navigation.navigate("HomeScreen");
+    });
+  };
+
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.background}>
       <Formik
-        initialValues={{ location_name: "", description: "", public: false }}
-        onSubmit={(values) => console.log(auth.currentUser.email)}
+        initialValues={{
+          location_name: "",
+          description: "",
+          public: false,
+        }}
+        onSubmit={handlePost}
       >
         {({
           handleChange,
@@ -35,6 +47,7 @@ function AddLocationScreen(props) {
             />
             <Text style={styles.label}>Description:</Text>
             <TextInput
+              multiline={true}
               style={styles.descriptionInput}
               onChangeText={handleChange("description")}
               onBlur={handleBlur("description")}
@@ -111,7 +124,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   descriptionInput: {
-    height: 100,
+    height: 130,
     width: 280,
     paddingHorizontal: 10,
     borderColor: "#ccc",
