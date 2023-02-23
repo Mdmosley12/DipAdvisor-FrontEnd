@@ -7,6 +7,7 @@ import { SafeAreaView, StyleSheet } from "react-native";
 import HomeScreen from "./app/screens/HomeScreen";
 import SignUpScreen from "./app/screens/SignUpScreen";
 import { UserProvider } from "./app/contexts/UserContext";
+import Upload from "./app/screens/Upload";
 
 const Stack = createStackNavigator();
 
@@ -15,7 +16,12 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <UserProvider>
         <NavigationContainer>
-          <Stack.Navigator>
+          <Stack.Navigator
+            initialRouteName="Upload" ///the name of the initial screen
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
             <Stack.Screen
               name="WelcomeScreen"
               component={WelcomeScreen}
@@ -34,6 +40,11 @@ export default function App() {
             <Stack.Screen
               name="HomeScreen"
               component={HomeScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Upload"
+              component={Upload}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>
