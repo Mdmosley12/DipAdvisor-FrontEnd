@@ -9,7 +9,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import Loading from "../components/Loading";
 import { getSingleLocation, patchLocation } from "../utils/api";
+
+const { width } = Dimensions.get("window");
 
 function SingleLocationScreen({ route, navigation }) {
   const { location_id } = route.params;
@@ -36,12 +39,17 @@ function SingleLocationScreen({ route, navigation }) {
   };
 
   if (loading) {
+    return <Loading />;
+  }
+
+  const renderLocationProperty = ({ item }) => {
     return (
-      <View style={styles.container}>
-        <Text>Loading...</Text>
+      <View style={styles.propertyItem}>
+        <Text style={styles.propertyName}>{item.name}</Text>
+        <Text style={styles.propertyValue}>{item.value}</Text>
       </View>
     );
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -70,7 +78,7 @@ function SingleLocationScreen({ route, navigation }) {
           horizontal
           showsHorizontalScrollIndicator={false}
           keyExtractor={(item, index) => index.toString()}
-          snapToInterval={Dimensions.get("window").width}
+          snapToInterval={width}
           decelerationRate="fast"
           pagingEnabled
           renderItem={({ item }) => (
@@ -87,10 +95,25 @@ function SingleLocationScreen({ route, navigation }) {
       <View style={styles.info}>
         <Text style={styles.title}>{location.location_name}</Text>
         <Text style={styles.description}>{location.description}</Text>
+        <View style={styles.propertiesList}>
+          <FlatList
+            data={[
+              { name: "Depth", value: location.depth ? location.depth : "N/A" },
+              { name: "Public", value: location.public ? "Yes" : "No" },
+              {
+                name: "Water Temperature",
+                value: location.water_temp ? location.water_temp : "N/A",
+              },
+            ]}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={renderLocationProperty}
+          />
+        </View>
       </View>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -100,55 +123,82 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
-    paddingHorizontal: 16,
-    paddingTop: 40,
-  },
-  closeButton: {
-    justifyContent: "center",
-  },
-  flagButton: {
-    flexDirection: "row",
-    borderRadius: 8,
     alignItems: "center",
+    justifyContent: "space-between",
+    width: width,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    position: "absolute",
+    top: 0,
+    left: 0,
     zIndex: 2,
   },
+  closeButton: {
+    backgroundColor: "white",
+    borderRadius: 100,
+    padding: 10,
+    elevation: 2,
+  },
+  flagButton: {
+    backgroundColor: "white",
+    borderRadius: 100,
+    padding: 10,
+    elevation: 2,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  flagIcon: {
+    width: 20,
+    height: 20,
+    marginRight: 10,
+  },
   flagButtonText: {
-    marginLeft: 8,
-    color: "black",
-    fontSize: 16,
     fontWeight: "bold",
-    borderWidth: 2,
-    borderColor: "red",
-    padding: 8,
-    borderRadius: 8,
+    fontSize: 16,
+    color: "black",
   },
   imageGrid: {
-    flex: 1,
-    width: "100%",
-    justifyContent: "center",
-    marginTop: 40,
-    marginBottom: 16,
+    height: 300,
+    width: width,
+    backgroundColor: "#EFEFEF",
   },
   imageItem: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").width / 2,
+    width: width,
+    height: 300,
   },
   image: {
     width: "100%",
     height: "100%",
   },
   info: {
-    flex: 2,
-    padding: 16,
+    padding: 20,
+    width: "100%",
   },
   title: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 8,
+    marginBottom: 10,
   },
   description: {
+    fontSize: 16,
+    marginBottom: 20,
+  },
+  propertiesList: {
+    width: "100%",
+  },
+  propertyItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 5,
+    borderBottomColor: "#EFEFEF",
+    borderBottomWidth: 1,
+  },
+  propertyName: {
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  propertyValue: {
     fontSize: 16,
   },
 });
