@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet, Image } from "react-native";
 import { UserContext } from "../contexts/UserContext";
 import { useContext } from "react";
+import { auth } from "../assets/firebase";
 import { getTopLocations } from "../utils/api.utils";
 
 const PopularSpotsBox = ({ popularSpots }) => {
@@ -39,7 +40,8 @@ const HomeScreen = (props) => {
 
   return (
     <View style={styles.background}>
-      <Text>Where's today's dip {userValue.user.name}?</Text>
+      <Text>Welcome {auth.currentUser?.email}</Text>
+      <Text>Where's today's dip {userValue.user}?</Text>
       <PopularSpotsBox popularSpots={popularSpots} />
     </View>
   );
