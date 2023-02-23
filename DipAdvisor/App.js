@@ -7,6 +7,7 @@ import { SafeAreaView, StyleSheet } from "react-native";
 import HomeScreen from "./app/screens/HomeScreen";
 import SignUpScreen from "./app/screens/SignUpScreen";
 import { UserProvider } from "./app/contexts/UserContext";
+import AddLocationScreen from "./app/screens/AddLocationScreen";
 
 const Stack = createStackNavigator();
 
@@ -34,6 +35,11 @@ export default function App() {
             <Stack.Screen
               name="HomeScreen"
               component={HomeScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="AddLocationScreen"
+              component={AddLocationScreen}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>
