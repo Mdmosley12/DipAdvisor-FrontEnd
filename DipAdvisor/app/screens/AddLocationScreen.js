@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
 
-function AddLocation(prop) {
+function AddLocationScreen(prop) {
   return (
     <View>
       <Text>Adding location holder text</Text>
@@ -8,4 +8,4 @@ function AddLocation(prop) {
   );
 }
 
-export default AddLocation;
+export default AddLocationScreen;
