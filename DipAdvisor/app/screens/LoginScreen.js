@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 20,
     paddingHorizontal: 20,
-    marginTop: 130,
+    marginTop: 125,
   },
   emailInput: {
     height: 40,
@@ -134,6 +134,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 20,
     backgroundColor: "white",
+    borderRadius: 12,
   },
   passwordInput: {
     height: 40,
@@ -143,18 +144,21 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 20,
     backgroundColor: "white",
+    borderRadius: 12,
   },
   label: {
     alignSelf: "flex-start",
     marginBottom: 5,
     fontSize: 20,
+    fontWeight: "bold",
   },
   button: {
     marginTop: 20,
   },
   disclaimer: {
-    backgroundColor: "white",
+    // backgroundColor: 'white',
     marginBottom: 10,
     width: 280,
+    fontWeight: "bold",
   },
 });

@@ -5,6 +5,7 @@ import WelcomeScreen from "./app/screens/WelcomeScreen";
 import LoginScreen from "./app/screens/LoginScreen";
 import { SafeAreaView, StyleSheet } from "react-native";
 import HomeScreen from "./app/screens/HomeScreen";
+import SignUpScreen from "./app/screens/SignUpScreen";
 import { UserProvider } from "./app/contexts/UserContext";
 
 const Stack = createStackNavigator();
@@ -23,6 +24,11 @@ export default function App() {
             <Stack.Screen
               name="LoginScreen"
               component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="SignUpScreen"
+              component={SignUpScreen}
               options={{ headerShown: false }}
             />
             <Stack.Screen
