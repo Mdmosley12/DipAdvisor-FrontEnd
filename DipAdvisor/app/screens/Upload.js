@@ -2,17 +2,60 @@ import { SafeAreaView, Text, StyleSheet } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Button, Image, View, Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { ref, uploadBytes } from "firebase/storage";
+import { ref, uploadBytes, getStorage } from "firebase/storage";
 import { storage } from "../assets/firebase";
+import uuid from "uuid";
+import "firebase/storage";
 
 function ImagePickerExample() {
+  async function uploadImageAsync(uri) {
+    // Why are we using XMLHttpRequest? See:
+    // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+
+    // const blob = await new Promise((resolve, reject) => {
+    //   const xhr = new XMLHttpRequest();
+    //   xhr.onload = function () {
+    //     resolve(xhr.response);
+    //   };
+    //   xhr.onerror = function (e) {
+    //     console.log(e);
+    //     reject(new TypeError("Network request failed"));
+    //   };
+    //   xhr.responseType = "blob";
+    //   xhr.open("GET", uri, true);
+    //   xhr.send(null);
+    // });
+
+    const fileRef = ref(getStorage(), uuid.v4());
+    const result = await uploadBytes(fileRef, blob);
+
+    // We're done with the blob, close and release it
+    blob.close();
+
+    return await getDownloadURL(fileRef);
+  }
+
   const [image, setImage] = useState(null);
 
-  const uploadImage = () => {
-    const storageRef = ref(storage, "image");
-    console.log(image);
+  const uploadImage = async () => {
+    const storageRef = ref(storage, "hello");
+
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function (e) {
+        console.log(e);
+        reject(new TypeError("Network request failed"));
+      };
+      xhr.responseType = "blob";
+      xhr.open("GET", image, true);
+      xhr.send(null);
+    });
     // 'file' comes from the Blob or File API
-    uploadBytes(storageRef, image).then((snapshot) => {
+    uploadBytes(storageRef, blob).then((snapshot) => {
+      console.log(snapshot);
       console.log("Uploaded a blob or file!");
     });
   };
