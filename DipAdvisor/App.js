@@ -1,13 +1,13 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
+import { SafeAreaView, StyleSheet } from "react-native";
+import { UserProvider } from "./app/contexts/UserContext";
 import WelcomeScreen from "./app/screens/WelcomeScreen";
 import LoginScreen from "./app/screens/LoginScreen";
-import { SafeAreaView, StyleSheet } from "react-native";
 import HomeScreen from "./app/screens/HomeScreen";
 import SignUpScreen from "./app/screens/SignUpScreen";
-import { UserProvider } from "./app/contexts/UserContext";
-import Upload from "./app/screens/Upload";
+import UploadImage from "./app/screens/UploadImage";
 
 const Stack = createStackNavigator();
 
@@ -16,12 +16,7 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <UserProvider>
         <NavigationContainer>
-          <Stack.Navigator
-            initialRouteName="Upload" ///the name of the initial screen
-            screenOptions={{
-              headerShown: false,
-            }}
-          >
+          <Stack.Navigator>
             <Stack.Screen
               name="WelcomeScreen"
               component={WelcomeScreen}
@@ -43,8 +38,8 @@ export default function App() {
               options={{ headerShown: false }}
             />
             <Stack.Screen
-              name="Upload"
-              component={Upload}
+              name="UploadImage"
+              component={UploadImage}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>
