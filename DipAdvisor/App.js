@@ -5,6 +5,7 @@ import { SafeAreaView, StyleSheet } from "react-native";
 import HomeScreen from "./app/screens/HomeScreen";
 import SignUpScreen from "./app/screens/SignUpScreen";
 import { UserProvider } from "./app/contexts/UserContext";
+import AddLocationScreen from "./app/screens/AddLocationScreen";
 import LoginScreen from "./app/screens/LoginScreen";
 import SingleLocationScreen from "./app/screens/SingleLocationScreen";
 import WelcomeScreen from "./app/screens/WelcomeScreen";
@@ -35,6 +36,11 @@ export default function App() {
             <Stack.Screen
               name="HomeScreen"
               component={HomeScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="AddLocationScreen"
+              component={AddLocationScreen}
               options={{ headerShown: false }}
             />
             <Stack.Screen
