@@ -16,8 +16,6 @@ import {
   View,
 } from "react-native";
 
-// const HomeScreen = ({ navigation }) => {
-
 const PopularSpotsBox = ({ popularSpots }) => {
   return (
     <View>
