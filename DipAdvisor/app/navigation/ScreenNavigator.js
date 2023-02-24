@@ -1,15 +1,15 @@
-import WelcomeScreen from "../app/screens/WelcomeScreen";
-import LoginScreen from "../app/screens/LoginScreen";
-import HomeScreen from "../app/screens/HomeScreen";
-import SignUpScreen from "../app/screens/SignUpScreen";
+import WelcomeScreen from "../screens/WelcomeScreen";
+import LoginScreen from "../screens/LoginScreen";
+import HomeScreen from "../screens/HomeScreen";
+import SignUpScreen from "../screens/SignUpScreen";
 
-import MapViewScreen from "../app/screens/MapViewScreen";
-import SingleLocationScreen from "../app/screens/SingleLocationScreen";
-import AddLocationScreen from "../app/screens/AddLocationScreen";
+import MapViewScreen from "../screens/MapViewScreen";
+import SingleLocationScreen from "../screens/SingleLocationScreen";
+import AddLocationScreen from "../screens/AddLocationScreen";
 
 import { createStackNavigator } from "@react-navigation/stack";
 import { SafeAreaView, StyleSheet } from "react-native";
-import { UserProvider } from "../app/contexts/UserContext";
+import { UserProvider } from "../contexts/UserContext";
 
 const Stack = createStackNavigator();
 

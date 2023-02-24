@@ -3,14 +3,15 @@ import React, { useEffect, useState } from "react";
 import {
   Dimensions,
   FlatList,
-  Image,
   StyleSheet,
+  Image,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import Loading from "../components/Loading";
 import { getSingleLocation, patchLocation } from "../utils/api";
+// import { styles } from "../styles/styles.SingleLocationScreen";
 
 const { width } = Dimensions.get("window");
 
@@ -56,13 +57,15 @@ function SingleLocationScreen({ route, navigation }) {
       <View style={styles.topContainer}>
         <TouchableOpacity
           style={styles.closeButton}
-          onPress={() => navigation.navigate("HomeScreen")}>
+          onPress={() => navigation.navigate("HomeScreen")}
+        >
           <MaterialIcons name="close" size={24} color="black" />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.flagButton}
           onPress={handleFlagLocation}
-          disabled={location.dangerous}>
+          disabled={location.dangerous}
+        >
           <Image
             style={styles.flagIcon}
             source={require("../assets/RedFlag.png")}

@@ -11,13 +11,13 @@ function NavBar(props) {
   return (
     <Tab.Navigator style={styles.container}>
       <Tab.Screen
-        name="View on Maps"
-        component={MapStackNavigator}
+        name="Home"
+        component={MainStackNavigator}
         options={{ headerShown: false }}
       />
       <Tab.Screen
-        name="Home"
-        component={MainStackNavigator}
+        name="View on Maps"
+        component={MapStackNavigator}
         options={{ headerShown: false }}
       />
       <Tab.Screen
