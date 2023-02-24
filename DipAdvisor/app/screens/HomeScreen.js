@@ -10,6 +10,7 @@ const PopularSpotsBox = ({ popularSpots }) => {
     <View>
       <Text>Most popular spots:</Text>
       {popularSpots.map((spot) => {
+        console.log(spot, "spot");
         return <PopularSpotBox spot={spot} key={spot._id} />;
       })}
     </View>
@@ -41,7 +42,7 @@ const HomeScreen = (props) => {
   return (
     <View style={styles.background}>
       <Text>Welcome {auth.currentUser?.email}</Text>
-      <Text>Where's today's dip {userValue.user}?</Text>
+      <Text>Where's today's dip {userValue.user.name}?</Text>
       <PopularSpotsBox popularSpots={popularSpots} />
     </View>
   );
