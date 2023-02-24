@@ -4,7 +4,8 @@ import { Button, Image, View, Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { ref, uploadBytes, getStorage } from "firebase/storage";
 import { storage } from "../assets/firebase";
-import uuid from "uuid";
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from "uuid";
 import "firebase/storage";
 
 function ImagePickerExample() {
@@ -38,7 +39,7 @@ function ImagePickerExample() {
   const [image, setImage] = useState(null);
 
   const uploadImage = async () => {
-    const storageRef = ref(storage, "hello");
+    const storageRef = ref(storage, uuidv4());
 
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
