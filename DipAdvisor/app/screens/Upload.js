@@ -58,6 +58,9 @@ function ImagePickerExample() {
     uploadBytes(storageRef, blob).then((snapshot) => {
       console.log(snapshot);
       console.log("Uploaded a blob or file!");
+      snapshot.ref.getDownloadURL().then(function (downloadURL) {
+        console.log("File available at", downloadURL);
+      });
     });
   };
 
