@@ -10,7 +10,7 @@ import {
 import { Formik } from "formik";
 import { Switch } from "react-native";
 import { auth } from "../assets/firebase";
-import { addLocation } from "../utils/api.utils";
+import { addLocation } from "../utils/api";
 import { styles } from "../styles/styles.AddLocationScreen";
 
 function AddLocationScreen({ navigation }) {
