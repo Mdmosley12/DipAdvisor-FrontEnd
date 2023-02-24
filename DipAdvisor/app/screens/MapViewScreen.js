@@ -5,7 +5,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
-import Constants from "expo-constants";
+
 import MapView, { Marker } from "react-native-maps";
 import { useState, useEffect } from "react";
 import { getAllLocations } from "../utils/api";
