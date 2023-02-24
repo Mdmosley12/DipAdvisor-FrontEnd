@@ -1,5 +1,3 @@
-import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaView, StyleSheet } from "react-native";
 import { UserProvider } from "./app/contexts/UserContext";
@@ -9,49 +7,12 @@ import HomeScreen from "./app/screens/HomeScreen";
 import SignUpScreen from "./app/screens/SignUpScreen";
 import UploadImage from "./app/screens/UploadImage";
 
-const Stack = createStackNavigator();
+import NavBar from "./navigation/NavBar";
 
 export default function App() {
   return (
-    <SafeAreaView style={styles.container}>
-      <UserProvider>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen
-              name="WelcomeScreen"
-              component={WelcomeScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="LoginScreen"
-              component={LoginScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="SignUpScreen"
-              component={SignUpScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="HomeScreen"
-              component={HomeScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="UploadImage"
-              component={UploadImage}
-              options={{ headerShown: false }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </UserProvider>
-    </SafeAreaView>
+    <NavigationContainer>
+      <NavBar />
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-});
