@@ -23,7 +23,7 @@ function LoginScreen({ navigation }) {
         .signInWithEmailAndPassword(values.email, values.password)
         .then((userCredentials) => {
           const user = userCredentials.user;
-          userValue.setUser(user.email);
+          userValue.setUser(user.displayName);
           console.log("Logged in with:", user.email);
         })
         .catch((error) => alert(error.message));

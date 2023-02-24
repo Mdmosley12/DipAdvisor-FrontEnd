@@ -52,7 +52,7 @@ const HomeScreen = ({ navigation }, props) => {
   const handleGetLocation = (values) => {
     navigation.push("SingleLocationScreen", values);
   };
-
+  console.log(userValue);
   return (
     <View style={styles.container}>
       <Formik initialValues={{ location_id: "" }} onSubmit={handleGetLocation}>
@@ -85,7 +85,7 @@ const HomeScreen = ({ navigation }, props) => {
       </Formik>
 
       <View style={styles.backgroundWelcome}>
-        <Text>Welcome {auth.currentUser?.email}</Text>
+        <Text>Welcome {auth.currentUser?.displayName}</Text>
         <Text>Where's today's dip {userValue.user.name}?</Text>
         <PopularSpotsBox popularSpots={popularSpots} />
       </View>
