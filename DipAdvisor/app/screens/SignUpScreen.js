@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { auth } from "../assets/firebase";
 import { CheckBox } from "react-native-elements";
+import { styles } from "../styles/styles.SignUpScreen";
 
 function SignUpScreen({ navigation }) {
   const handleSignUp = (values) => {
@@ -20,9 +21,9 @@ function SignUpScreen({ navigation }) {
           const user = userCredentials.user;
           console.log("Signed up with:", user.email);
           user.updateProfile({
-            displayName: values.username,
+            displayName: values.displayName,
           });
-          console.log(user.username);
+          console.log(user.displayName);
         })
         .catch((error) => alert(error.message));
     }

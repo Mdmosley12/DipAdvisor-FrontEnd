@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { MainStackNavigator, MapStackNavigator } from "./ScreenNavigator";
-import AddLocationScreen from "../app/screens/AddLocationScreen";
+import AddLocationScreen from "../screens/AddLocationScreen";
 
 function NavBar(props) {
   const Tab = createBottomTabNavigator();
