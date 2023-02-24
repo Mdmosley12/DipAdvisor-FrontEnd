@@ -23,18 +23,18 @@ function MapViewScreen({ navigation }) {
   //need useEffect to get current location
 
   //get user location at start
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        Alert.alert("Permission to access location was denied");
-        return;
-      }
+  // useEffect(() => {
+  //   (async () => {
+  //     let { status } = await Location.requestForegroundPermissionsAsync();
+  //     if (status !== "granted") {
+  //       Alert.alert("Permission to access location was denied");
+  //       return;
+  //     }
 
-      let location = await Location.getCurrentPositionAsync({});
-      setUserLocation(location);
-    })();
-  }, []);
+  //     let location = await Location.getCurrentPositionAsync({});
+  //     setUserLocation(location);
+  //   })();
+  // }, []);
 
   useEffect(() => {
     setIsLoading(true);
@@ -72,44 +72,27 @@ function MapViewScreen({ navigation }) {
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
+          latitude: 52,
+          longitude: -1,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
-      />
-      {/* // showsUserLocation={true} requires permissions, see react-native-permissions
-        // showsMyLocationButton={true} moves to users current location
-        //zoomEnabled={true}
-        //showsScale={true} */}
+      >
+        {/* // showsUserLocation={true} requires permissions, see react-native-permissions
+      // showsMyLocationButton={true} moves to users current location
+      //zoomEnabled={true}
+    //showsScale={true} */}
 
-      {/* <Marker
-          coordinate={{
-            latitude: userLocation
-              ? userLocation.coords.latitude
-              : Constants.manifest.extra.defaultLatitude,
-            longitude: userLocation
-              ? userLocation.coords.longitude
-              : Constants.manifest.extra.defaultLongitude,
-          }}
-          title="Marker Title"
-          description="Marker Description"
-        /> */}
-
-      {/* <Marker>
-          {mapMarkers.map((marker, index) => {
-            return (
-              <Marker
-                key={index}
-                coordinate={{
-                  latitude: marker.coordinate.latitude,
-                  longitude: marker.coordinate.longitude,
-                }}
-                title={marker.location_name}
-              ></Marker>
-            );
-          })}
-        </Marker> */}
+        {mapMarkers.map((marker, index) => {
+          return (
+            <Marker
+              key={index}
+              coordinate={marker.coordinate}
+              title={marker.location_name}
+            />
+          );
+        })}
+      </MapView>
     </SafeAreaView>
   );
 }
