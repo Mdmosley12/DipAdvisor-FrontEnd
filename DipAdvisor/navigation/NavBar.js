@@ -2,9 +2,10 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import { MainStackNavigator } from "./ScreenNavigator";
-import MapViewScreen from "../app/screens/MapViewScreen";
+import { MainStackNavigator, MapStackNavigator } from "./ScreenNavigator";
+
 import AddLocationScreen from "../app/screens/AddLocationScreen";
+import MapViewScreen from "../app/screens/MapViewScreen";
 
 function NavBar(props) {
   const Tab = createBottomTabNavigator();
@@ -13,7 +14,7 @@ function NavBar(props) {
     <Tab.Navigator style={styles.container}>
       <Tab.Screen
         name="View on Maps"
-        component={MapViewScreen}
+        component={MapStackNavigator}
         options={{ headerShown: false }}
       />
       <Tab.Screen

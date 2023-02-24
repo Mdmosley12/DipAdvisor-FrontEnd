@@ -1,6 +1,12 @@
-import { View, Text, StyleSheet, SafeAreaView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+} from "react-native";
 
-function MapViewScreen(props) {
+function MapViewScreen({ navigation }, props) {
   return (
     <SafeAreaView style={styles.container}>
       <Text>Map holder</Text>
@@ -9,7 +15,8 @@ function MapViewScreen(props) {
       <Text>Map holder</Text>
       <Text>Map holder</Text>
       <Text>Map holder</Text>
-      <Text>Map holder</Text>
+
+      <Text>Single location 3 holder</Text>
     </SafeAreaView>
   );
 }

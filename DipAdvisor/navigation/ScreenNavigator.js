@@ -4,6 +4,7 @@ import HomeScreen from "../app/screens/HomeScreen";
 import SignUpScreen from "../app/screens/SignUpScreen";
 
 import MapViewScreen from "../app/screens/MapViewScreen";
+import SingleLocationScreen from "../app/screens/SingleLocationScreen";
 import AddLocationScreen from "../app/screens/AddLocationScreen";
 
 import { createStackNavigator } from "@react-navigation/stack";
@@ -37,6 +38,11 @@ const MainStackNavigator = () => {
             component={HomeScreen}
             options={{ headerShown: false }}
           />
+          <Stack.Screen
+            name="SingleLocationScreen"
+            component={SingleLocationScreen}
+            options={{ headerShown: false }}
+          />
         </Stack.Navigator>
       </UserProvider>
     </SafeAreaView>
@@ -59,14 +65,19 @@ const AddLocationNavigator = () => {
   );
 };
 
-const MapNavigator = () => {
+const MapStackNavigator = () => {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <UserProvider>
         <Stack.Navigator>
           <Stack.Screen
             name="View all map locations"
             component={MapViewScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Single Location"
+            component={SingleLocationScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
@@ -82,4 +93,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { MainStackNavigator, MapNavigator, AddLocationNavigator };
+export { MainStackNavigator, MapStackNavigator, AddLocationNavigator };
