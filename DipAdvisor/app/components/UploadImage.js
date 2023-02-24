@@ -71,12 +71,7 @@ function ImagePickerExample() {
 }
 
 function Upload(props) {
-  return (
-    <SafeAreaView style={styles.background}>
-      <Text>UPLOAD</Text>
-      <ImagePickerExample></ImagePickerExample>
-    </SafeAreaView>
-  );
+  return <ImagePickerExample />;
 }
 
 const styles = StyleSheet.create({
