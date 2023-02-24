@@ -37,6 +37,11 @@ export default function App() {
               component={HomeScreen}
               options={{ headerShown: false }}
             />
+            <Stack.Screen
+              name="SingleLocationScreen"
+              component={SingleLocationScreen}
+              options={{ headerShown: false }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </UserProvider>
