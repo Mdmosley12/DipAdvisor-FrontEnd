@@ -4,10 +4,11 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     alignItems: "center",
+    padding: 20,
   },
   formContainer: {
     backgroundColor: "#4ecdc4",
-    width: "80%",
+    width: "100%",
     marginTop: 50,
     borderRadius: 8,
     shadowColor: "#000",

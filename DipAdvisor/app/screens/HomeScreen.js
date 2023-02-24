@@ -85,8 +85,8 @@ const HomeScreen = ({ navigation }, props) => {
       </Formik>
 
       <View style={styles.backgroundWelcome}>
-        <Text>Welcome {auth.currentUser?.email}</Text>
-        <Text>Where's today's dip {userValue.user.name}?</Text>
+        <Text>Welcome {auth.currentUser?.displayName}</Text>
+        <Text>Where's today's dip {auth.currentUser.displayName}?</Text>
         <PopularSpotsBox popularSpots={popularSpots} />
       </View>
     </View>

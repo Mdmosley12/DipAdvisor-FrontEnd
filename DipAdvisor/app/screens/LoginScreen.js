@@ -33,7 +33,7 @@ function LoginScreen({ navigation }) {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        navigation.navigate("HomeScreen");
+        navigation.navigate("WelcomeScreen");
       }
     });
     return unsubscribe;

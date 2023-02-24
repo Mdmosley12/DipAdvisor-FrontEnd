@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   ImageBackground,
   View,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { styles } from "../styles/styles.WelcomeScreen";
+import { auth } from "../assets/firebase";
 
 function WelcomeScreen({ navigation }) {
   return (
