@@ -7,5 +7,13 @@ const dipAdvisor = axios.create({
 export const addLocation = (body) => {
   return dipAdvisor.post("/locations", body).then(({ data }) => {
     return data;
+    
+export const getTopLocations = () => {
+  return dipAdvisor.get("/locations").then(({ data: { locations } }) => {
+    const topSixLocations = locations
+      .sort((a, b) => a.votes - b.votes)
+      .slice(0, 6);
+
+    return topSixLocations;
   });
 };
