@@ -38,6 +38,7 @@ function AddLocationScreen({ navigation }) {
     uploadImage(image, setImageURL).then(() => {
       values.created_by = auth.currentUser.email;
       values.image_urls = imageURL;
+
       addLocation(values).then(({ location }) => {
         const locationID = { location_id: location[0]._id };
         navigation.navigate("SingleLocationScreen", locationID);
@@ -107,17 +108,17 @@ function AddLocationScreen({ navigation }) {
                     {errors.description}
                   </Text>
                 ) : null}
-                <Text style={styles.label}>
-                  <Button
-                    title="Select photo"
-                    onPress={() => pickImage(setImage)}
+                <Button
+                  title="Select photo"
+                  onPress={() => pickImage(setImage)}
+                />
+                {image && (
+                  <Image
+                    source={{ uri: image }}
+                    style={{ width: 200, height: 200 }}
                   />
-                  {image && (
-                    <Image
-                      source={{ uri: image }}
-                      style={{ width: 200, height: 200 }}
-                    />
-                  )}
+                )}
+                <Text style={styles.label}>
                   Is this location on public land?
                 </Text>
                 <View style={styles.switchContainer}>
