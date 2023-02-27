@@ -17,6 +17,7 @@ import { useState } from "react";
 import "react-native-get-random-values";
 import { uploadImage, pickImage } from "../utils/imageUploads";
 import * as Yup from "yup";
+import * as ImagePicker from "expo-image-picker";
 
 function AddLocationScreen({ navigation }) {
   const [image, setImage] = useState(null);
@@ -43,7 +44,18 @@ function AddLocationScreen({ navigation }) {
       });
     });
   };
+  const pickImage = async (setImage) => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
 
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
   return (
     <ImageBackground
       style={styles.background}
@@ -96,6 +108,16 @@ function AddLocationScreen({ navigation }) {
                   </Text>
                 ) : null}
                 <Text style={styles.label}>
+                  <Button
+                    title="Select photo"
+                    onPress={() => pickImage(setImage)}
+                  />
+                  {image && (
+                    <Image
+                      source={{ uri: image }}
+                      style={{ width: 200, height: 200 }}
+                    />
+                  )}
                   Is this location on public land?
                 </Text>
                 <View style={styles.switchContainer}>
