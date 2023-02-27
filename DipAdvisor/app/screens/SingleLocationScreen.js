@@ -1,7 +1,7 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
-import { auth } from "../assets/firebase";
+import { auth } from "../firebase";
 import Loading from "../components/Loading";
 import { styles, width } from "../styles/styles.SingleLocationScreen";
 import { getSingleLocation, patchLocation } from "../utils/api";
@@ -50,13 +50,15 @@ function SingleLocationScreen({ route, navigation }) {
       <View style={styles.topContainer}>
         <TouchableOpacity
           style={styles.closeButton}
-          onPress={() => navigation.navigate("HomeScreen")}>
+          onPress={() => navigation.navigate("HomeScreen")}
+        >
           <MaterialIcons name="close" size={24} color="black" />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.flagButton}
           onPress={handleFlagLocation}
-          disabled={location.dangerous ? checkAdmin(user) : false}>
+          disabled={location.dangerous ? checkAdmin(user) : false}
+        >
           <Image
             style={styles.flagIcon}
             source={require("../assets/RedFlag.png")}
