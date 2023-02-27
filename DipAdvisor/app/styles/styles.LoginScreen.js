@@ -7,7 +7,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   loginContainer: {
-    // backgroundColor: 'blue',
     borderRadius: 8,
     width: "80%",
     height: 450,
