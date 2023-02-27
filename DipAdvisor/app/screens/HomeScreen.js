@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { UserContext } from "../contexts/UserContext";
-import { useContext } from "react";
 import { auth } from "../assets/firebase";
 import { getTopLocations } from "../utils/api";
 import { styles } from "../styles/styles.HomeScreen";
-
 import { Text, Image, TouchableOpacity, View } from "react-native";
+
 const PopularSpotsBox = ({ popularSpots, navigation }) => {
   return (
     <View>
@@ -21,11 +19,13 @@ const PopularSpotsBox = ({ popularSpots, navigation }) => {
 
 const PopularSpotBox = ({ spot, navigation }) => {
   const goToLocation = (locationID) => {
-    navigation.navigate("SingleLocationScreen", locationID);
+    const spotToShow = { location_id: locationID };
+    navigation.push("SingleLocationScreen", spotToShow);
   };
+
   return (
     <View>
-      <TouchableOpacity onPress={() => goToLocation(spot._id)}>
+      <TouchableOpacity onPress={() => goToLocation(spot._id)} title="go">
         <Text>{spot.location_name}</Text>
         <Image
           style={{ width: 50, height: 50 }}
@@ -45,16 +45,6 @@ const HomeScreen = ({ navigation }) => {
     });
   }, []);
 
-<<<<<<< HEAD
-  // const handleGetLocation = (values) => {
-  //   navigation.push("SingleLocationScreen", values);
-  // };
-=======
-  const handleGetLocation = (values) => {
-    navigation.push("SingleLocationScreen", values);
-  };
-  console.log(userValue);
->>>>>>> 11d3d16bb1ac0b3ad6484f59b7be388d5bc42f6e
   return (
     <View style={styles.container}>
       <View style={styles.backgroundWelcome}>
