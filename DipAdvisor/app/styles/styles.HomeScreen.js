@@ -10,25 +10,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 20,
     marginBottom: 10,
+    textAlign: "right",
   },
-  searchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: "#CCCCCC",
-    marginBottom: 10,
-    marginTop: 20,
-  },
-  input: {
-    flex: 1,
-    height: 40,
-    fontSize: 16,
-  },
-  icon: {
-    marginLeft: 10,
-  },
+
   // background: {
   //   flex: 1,
   //   padding: 20,
@@ -39,28 +23,21 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 10,
   },
-  searchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: "#CCCCCC",
-    marginBottom: 10,
-    marginTop: 20,
+  votes: {
+    fontSize: 12,
+    fontStyle: "italic",
   },
-  input: {
-    flex: 1,
-    height: 40,
-    fontSize: 16,
+  spotsTitle: {
+    fontSize: 18,
   },
-  icon: {
-    marginLeft: 10,
+  boxTitle: {
+    fontSize: 18,
+    textAlign: "right",
   },
   backgroundWelcome: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "flex-end",
   },
 });
 

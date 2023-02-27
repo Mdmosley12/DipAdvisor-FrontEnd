@@ -5,17 +5,33 @@ import { auth } from "../firebase";
 import { getTopLocations } from "../utils/api";
 import { styles } from "../styles/styles.HomeScreen";
 import { Text, Image, TouchableOpacity, View } from "react-native";
+import { ScrollView } from "react-native";
 
 const PopularSpotsBox = ({ popularSpots, navigation }) => {
   return (
-    <View>
-      <Text>Most popular spots:</Text>
-      {popularSpots.map((spot) => {
-        return (
-          <PopularSpotBox spot={spot} key={spot._id} navigation={navigation} />
-        );
-      })}
-    </View>
+    <ScrollView>
+      <View>
+        <Text style={styles.spotsTitle}>Most popular spots:</Text>
+      </View>
+      <View
+        style={{
+          flexWrap: "wrap",
+          flex: 1,
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        {popularSpots.map((spot) => {
+          return (
+            <PopularSpotBox
+              spot={spot}
+              key={spot._id}
+              navigation={navigation}
+            />
+          );
+        })}
+      </View>
+    </ScrollView>
   );
 };
 
@@ -26,14 +42,14 @@ const PopularSpotBox = ({ spot, navigation }) => {
   };
 
   return (
-    <View>
+    <View style={{ padding: 10 }}>
       <TouchableOpacity onPress={() => goToLocation(spot._id)} title="go">
-        <Text>{spot.location_name}</Text>
+        <Text style={styles.boxTitle}>{spot.location_name}</Text>
         <Image
-          style={{ width: 50, height: 50 }}
+          style={{ width: 160, height: 160 }}
           source={{ uri: spot.image_urls[0] }}
         />
-        <Text> Votes: {spot.votes}</Text>
+        <Text style={styles.votes}>{spot.votes} votes</Text>
       </TouchableOpacity>
     </View>
   );
@@ -50,7 +66,9 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.backgroundWelcome}>
-        <Text>Where's today's dip {auth.currentUser.displayName}?</Text>
+        <Text style={styles.heading}>
+          Where's today's dip {auth.currentUser.displayName}?
+        </Text>
         <PopularSpotsBox popularSpots={popularSpots} navigation={navigation} />
       </View>
     </View>

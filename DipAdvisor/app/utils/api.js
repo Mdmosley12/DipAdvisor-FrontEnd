@@ -20,7 +20,7 @@ export const getTopLocations = () => {
   return DipAdvisorAPI.get("/locations").then(({ data: { locations } }) => {
     const topSixLocations = locations
       .sort((a, b) => a.votes - b.votes)
-      .slice(0, 6);
+      .slice(0, 7);
 
     return topSixLocations;
   });
