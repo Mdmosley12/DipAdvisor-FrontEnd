@@ -6,6 +6,7 @@ import { getTopLocations } from "../utils/api";
 import { Ionicons } from "@expo/vector-icons";
 import { Formik } from "formik";
 import { styles } from "../styles/styles.HomeScreen";
+import { ScrollView } from "react-native";
 
 import {
   Keyboard,
@@ -18,21 +19,32 @@ import {
 
 const PopularSpotsBox = ({ popularSpots }) => {
   return (
-    <View>
-      <Text>Most popular spots:</Text>
-      {popularSpots.map((spot) => {
-        return <PopularSpotBox spot={spot} key={spot._id} />;
-      })}
-    </View>
+    <ScrollView>
+      <View>
+        <Text>Most popular spots:</Text>
+      </View>
+      <View
+        style={{
+          flexWrap: "wrap",
+          flex: 1,
+          flexDirection: "row",
+          // justifyContent: "space-evenly",
+        }}
+      >
+        {popularSpots.map((spot) => {
+          return <PopularSpotBox spot={spot} key={spot._id} />;
+        })}
+      </View>
+    </ScrollView>
   );
 };
 
 const PopularSpotBox = ({ spot }) => {
   return (
-    <View>
+    <View style={{ padding: "10%" }}>
       <Text>{spot.location_name}</Text>
       <Image
-        style={{ width: 50, height: 50 }}
+        style={{ width: 110, height: 110 }}
         source={{ uri: spot.image_urls[0] }}
       />
       <Text> Votes: {spot.votes}</Text>
@@ -52,40 +64,9 @@ const HomeScreen = ({ navigation }, props) => {
   const handleGetLocation = (values) => {
     navigation.push("SingleLocationScreen", values);
   };
-  console.log(userValue);
   return (
     <View style={styles.container}>
-      <Formik initialValues={{ location_id: "" }} onSubmit={handleGetLocation}>
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
-          <View style={styles.searchContainer}>
-            <TextInput
-              style={styles.input}
-              onChangeText={handleChange("location_id")}
-              onBlur={handleBlur("location_id")}
-              value={values.location_id}
-              placeholder="Search (Location ID)"
-              placeholderTextColor="#9B9B9B"
-              keyboardType="numeric"
-              returnKeyType="send"
-              onSubmitEditing={handleSubmit}
-            />
-            <TouchableOpacity
-              activeOpacity={1}
-              onPress={() => Keyboard.dismiss()}
-            >
-              <Ionicons
-                style={styles.icon}
-                name="search"
-                size={24}
-                color="#000000"
-              />
-            </TouchableOpacity>
-          </View>
-        )}
-      </Formik>
-
       <View style={styles.backgroundWelcome}>
-        <Text>Welcome {auth.currentUser?.displayName}</Text>
         <Text>Where's today's dip {auth.currentUser.displayName}?</Text>
         <PopularSpotsBox popularSpots={popularSpots} />
       </View>
