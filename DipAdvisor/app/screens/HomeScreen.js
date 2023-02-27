@@ -21,14 +21,14 @@ const PopularSpotsBox = ({ popularSpots }) => {
   return (
     <ScrollView>
       <View>
-        <Text>Most popular spots:</Text>
+        <Text style={styles.spotsTitle}>Most popular spots:</Text>
       </View>
       <View
         style={{
           flexWrap: "wrap",
           flex: 1,
           flexDirection: "row",
-          // justifyContent: "space-evenly",
+          justifyContent: "space-between",
         }}
       >
         {popularSpots.map((spot) => {
@@ -41,13 +41,13 @@ const PopularSpotsBox = ({ popularSpots }) => {
 
 const PopularSpotBox = ({ spot }) => {
   return (
-    <View style={{ padding: "10%" }}>
-      <Text>{spot.location_name}</Text>
+    <View style={{ padding: 10 }}>
+      <Text style={styles.boxTitle}>{spot.location_name}</Text>
       <Image
-        style={{ width: 110, height: 110 }}
+        style={{ width: 160, height: 160 }}
         source={{ uri: spot.image_urls[0] }}
       />
-      <Text> Votes: {spot.votes}</Text>
+      <Text style={styles.votes}>{spot.votes} votes</Text>
     </View>
   );
 };
@@ -61,13 +61,12 @@ const HomeScreen = ({ navigation }, props) => {
     });
   }, []);
 
-  const handleGetLocation = (values) => {
-    navigation.push("SingleLocationScreen", values);
-  };
   return (
     <View style={styles.container}>
       <View style={styles.backgroundWelcome}>
-        <Text>Where's today's dip {auth.currentUser.displayName}?</Text>
+        <Text style={styles.heading}>
+          Where's today's dip {auth.currentUser.displayName}?
+        </Text>
         <PopularSpotsBox popularSpots={popularSpots} />
       </View>
     </View>
