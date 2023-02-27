@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import {
   ImageBackground,
   KeyboardAvoidingView,
-  StyleSheet,
   View,
   Text,
   TextInput,
@@ -11,6 +10,7 @@ import {
 } from "react-native";
 import { auth } from "../assets/firebase";
 import { CheckBox } from "react-native-elements";
+import { styles } from "../styles/styles.SignUpScreen";
 
 function SignUpScreen({ navigation }) {
   const handleSignUp = (values) => {
@@ -21,9 +21,8 @@ function SignUpScreen({ navigation }) {
           const user = userCredentials.user;
           console.log("Signed up with:", user.email);
           user.updateProfile({
-            displayName: values.username,
+            displayName: values.displayName,
           });
-          console.log(user.username);
         })
         .catch((error) => alert(error.message));
     }
@@ -32,7 +31,7 @@ function SignUpScreen({ navigation }) {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        navigation.navigate("HomeScreen");
+        navigation.navigate("WelcomeScreen");
       }
     });
     return unsubscribe;
@@ -111,75 +110,3 @@ function SignUpScreen({ navigation }) {
 }
 
 export default SignUpScreen;
-
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    justifyContent: "flex-start",
-    alignItems: "center",
-  },
-  loginContainer: {
-    // backgroundColor: 'blue',
-    borderRadius: 8,
-    width: "80%",
-    height: 450,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
-    alignItems: "center",
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-    marginTop: 125,
-  },
-  label: {
-    alignSelf: "flex-start",
-    marginBottom: 5,
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  emailInput: {
-    height: 40,
-    width: 280,
-    paddingHorizontal: 10,
-    borderColor: "#ccc",
-    borderWidth: 1,
-    marginBottom: 20,
-    backgroundColor: "white",
-    borderRadius: 12,
-  },
-  passwordInput: {
-    height: 40,
-    width: 280,
-    paddingHorizontal: 10,
-    borderColor: "#ccc",
-    borderWidth: 1,
-    marginBottom: 20,
-    backgroundColor: "white",
-    borderRadius: 12,
-  },
-  displayNameInput: {
-    height: 40,
-    width: 280,
-    paddingHorizontal: 10,
-    borderColor: "#ccc",
-    borderWidth: 1,
-    marginBottom: 20,
-    backgroundColor: "white",
-    borderRadius: 12,
-  },
-  disclaimer: {
-    backgroundColor: "white",
-    marginBottom: 10,
-    width: 280,
-    fontWeight: "bold",
-  },
-  checkbox: {
-    // borderRadius: 12,
-  },
-});

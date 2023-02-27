@@ -1,16 +1,16 @@
-import { StyleSheet } from "react-native";
+const { StyleSheet } = require("react-native");
 
 const styles = StyleSheet.create({
   background: {
     flex: 1,
+    justifyContent: "flex-start",
     alignItems: "center",
-    padding: 20,
   },
-  formContainer: {
-    backgroundColor: "#4ecdc4",
-    width: "100%",
-    marginTop: 50,
+  loginContainer: {
+    // backgroundColor: 'blue',
     borderRadius: 8,
+    width: "80%",
+    height: 450,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -23,14 +23,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 20,
     paddingHorizontal: 20,
+    marginTop: 125,
   },
-  label: {
-    alignSelf: "flex-start",
-    marginBottom: 5,
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  location_nameInput: {
+  emailInput: {
     height: 40,
     width: 280,
     paddingHorizontal: 10,
@@ -40,8 +35,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 12,
   },
-  descriptionInput: {
-    height: 130,
+  passwordInput: {
+    height: 40,
     width: 280,
     paddingHorizontal: 10,
     borderColor: "#ccc",
@@ -50,20 +45,20 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 12,
   },
-  switchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+  label: {
+    alignSelf: "flex-start",
+    marginBottom: 5,
+    fontSize: 20,
+    fontWeight: "bold",
   },
-  yes: {
-    paddingLeft: 10,
+  button: {
+    marginTop: 20,
   },
-  no: {
-    paddingRight: 10,
-  },
-  privateWarning: {
-    color: "red",
-    paddingBottom: 10,
-    fontStyle: "italic",
+  disclaimer: {
+    // backgroundColor: 'white',
+    marginBottom: 10,
+    width: 280,
+    fontWeight: "bold",
   },
 });
 
