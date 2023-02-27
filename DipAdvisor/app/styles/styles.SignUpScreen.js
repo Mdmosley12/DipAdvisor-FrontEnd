@@ -7,10 +7,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   loginContainer: {
-    // backgroundColor: 'blue',
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
     borderRadius: 8,
     width: "80%",
-    height: 450,
+    height: 570,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
