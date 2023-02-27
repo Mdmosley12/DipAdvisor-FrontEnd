@@ -35,14 +35,18 @@ function AddLocationScreen({ navigation }) {
   });
 
   const handlePost = (values) => {
-    uploadImage(image, setImageURL).then(() => {
-      values.created_by = auth.currentUser.email;
-      values.image_urls = imageURL;
-      addLocation(values).then(({ location }) => {
-        const locationID = { location_id: location[0]._id };
-        navigation.navigate("SingleLocationScreen", locationID);
+    if (auth.currentUser) {
+      uploadImage(image, setImageURL).then(() => {
+        values.created_by = auth.currentUser.email;
+        values.image_urls = imageURL;
+        addLocation(values).then(({ location }) => {
+          const locationID = { location_id: location[0]._id };
+          navigation.navigate("SingleLocationScreen", locationID);
+        });
       });
-    });
+    } else {
+      alert("Please login to add location");
+    }
   };
   const pickImage = async (setImage) => {
     let result = await ImagePicker.launchImageLibraryAsync({

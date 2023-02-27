@@ -1,5 +1,4 @@
 import React from "react";
-import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { MainStackNavigator, MapStackNavigator } from "./ScreenNavigator";
@@ -9,7 +8,7 @@ function NavBar(props) {
   const Tab = createBottomTabNavigator();
 
   return (
-    <Tab.Navigator style={styles.container}>
+    <Tab.Navigator>
       <Tab.Screen
         name="Home"
         component={MainStackNavigator}
@@ -28,11 +27,5 @@ function NavBar(props) {
     </Tab.Navigator>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    margin: 0,
-    padding: 0,
-  },
-});
 
 export default NavBar;
