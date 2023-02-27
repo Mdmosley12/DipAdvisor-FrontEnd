@@ -3,21 +3,11 @@ import { UserContext } from "../contexts/UserContext";
 import { useContext } from "react";
 import { auth } from "../firebase";
 import { getTopLocations } from "../utils/api";
-import { Ionicons } from "@expo/vector-icons";
-import { Formik } from "formik";
 import { styles } from "../styles/styles.HomeScreen";
+import { Text, Image, TouchableOpacity, View } from "react-native";
 import { ScrollView } from "react-native";
 
-import {
-  Keyboard,
-  Text,
-  Image,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
-
-const PopularSpotsBox = ({ popularSpots }) => {
+const PopularSpotsBox = ({ popularSpots, navigation }) => {
   return (
     <ScrollView>
       <View>
@@ -39,22 +29,28 @@ const PopularSpotsBox = ({ popularSpots }) => {
   );
 };
 
-const PopularSpotBox = ({ spot }) => {
+const PopularSpotBox = ({ spot, navigation }) => {
+  const goToLocation = (locationID) => {
+    const spotToShow = { location_id: locationID };
+    navigation.push("SingleLocationScreen", spotToShow);
+  };
+
   return (
     <View style={{ padding: 10 }}>
-      <Text style={styles.boxTitle}>{spot.location_name}</Text>
-      <Image
-        style={{ width: 160, height: 160 }}
-        source={{ uri: spot.image_urls[0] }}
-      />
-      <Text style={styles.votes}>{spot.votes} votes</Text>
+      <TouchableOpacity onPress={() => goToLocation(spot._id)} title="go">
+        <Text style={styles.boxTitle}>{spot.location_name}</Text>
+        <Image
+          style={{ width: 160, height: 160 }}
+          source={{ uri: spot.image_urls[0] }}
+        />
+        <Text style={styles.votes}>{spot.votes} votes</Text>
+      </TouchableOpacity>
     </View>
   );
 };
-
-const HomeScreen = ({ navigation }, props) => {
-  const userValue = useContext(UserContext);
+const HomeScreen = ({ navigation }) => {
   const [popularSpots, setPopularSpots] = useState([]);
+
   useEffect(() => {
     getTopLocations().then((data) => {
       setPopularSpots(data);
