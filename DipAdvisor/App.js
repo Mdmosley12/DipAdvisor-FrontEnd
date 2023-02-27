@@ -7,7 +7,7 @@ import HomeScreen from "./app/screens/HomeScreen";
 import SignUpScreen from "./app/screens/SignUpScreen";
 import UploadImage from "./app/screens/UploadImage";
 
-import NavBar from "./navigation/NavBar";
+import NavBar from "./app/navigation/NavBar";
 
 export default function App() {
   return (

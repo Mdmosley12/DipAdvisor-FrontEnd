@@ -31,3 +31,9 @@ export const addLocation = (body) => {
     return data;
   });
 };
+
+export const getAllLocations = () => {
+  return DipAdvisorAPI.get("/locations").then(({ data: { locations } }) => {
+    return locations;
+  });
+};

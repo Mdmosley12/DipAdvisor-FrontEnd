@@ -8,6 +8,7 @@ import {
   ImageBackground,
   Image,
   ScrollView,
+  ScrollView,
 } from "react-native";
 import { Formik } from "formik";
 import { Switch } from "react-native";
@@ -38,7 +39,7 @@ function AddLocationScreen({ navigation }) {
       source={require("../assets/WelcomeScreenImg.jpg")}
     >
       <ScrollView>
-        <KeyboardAvoidingView behavior="padding" style={styles.background}>
+        <KeyboardAvoidingView style={styles.background}>
           <Formik
             initialValues={{
               location_name: "",
@@ -70,17 +71,6 @@ function AddLocationScreen({ navigation }) {
                   onBlur={handleBlur("description")}
                   value={values.description}
                 />
-
-                <Button
-                  title="Pick an image from camera roll"
-                  onPress={() => pickImage(setImage)}
-                />
-                {image && (
-                  <Image
-                    source={{ uri: image }}
-                    style={{ width: 200, height: 200 }}
-                  />
-                )}
                 <Text style={styles.label}>
                   Is this location on public land?
                 </Text>

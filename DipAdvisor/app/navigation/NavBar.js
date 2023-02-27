@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { MainStackNavigator, MapStackNavigator } from "./ScreenNavigator";
-import AddLocationScreen from "../app/screens/AddLocationScreen";
+import AddLocationScreen from "../screens/AddLocationScreen";
 
 function NavBar(props) {
   const Tab = createBottomTabNavigator();
@@ -11,19 +11,19 @@ function NavBar(props) {
   return (
     <Tab.Navigator style={styles.container}>
       <Tab.Screen
-        name="View on Maps"
-        component={MapStackNavigator}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
         name="Home"
         component={MainStackNavigator}
         options={{ headerShown: false }}
       />
       <Tab.Screen
+        name="View on Maps"
+        component={MapStackNavigator}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
         name="Add Swim Spot"
         component={AddLocationScreen}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, tabBarVisible: false }}
       />
     </Tab.Navigator>
   );
