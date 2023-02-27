@@ -9,13 +9,15 @@ import {
 } from "react-native";
 import { Formik } from "formik";
 import { CheckBox } from "react-native-elements";
-import { auth } from "../assets/firebase";
-import { UserContext } from "../contexts/UserContext";
-import { useContext } from "react";
+import { auth } from "../firebase";
 import { styles } from "../styles/styles.LoginScreen";
+import * as Yup from "yup";
 
 function LoginScreen({ navigation }) {
-  const userValue = useContext(UserContext);
+  const validationSchema = Yup.object().shape({
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    password: Yup.string().required("Password is required"),
+  });
 
   const handleLogin = (values) => {
     if (values.isChecked === true) {
@@ -23,10 +25,11 @@ function LoginScreen({ navigation }) {
         .signInWithEmailAndPassword(values.email, values.password)
         .then((userCredentials) => {
           const user = userCredentials.user;
-          userValue.setUser(user.email);
           console.log("Logged in with:", user.email);
         })
         .catch((error) => alert(error.message));
+    } else {
+      alert("Please accept terms & conditions");
     }
   };
 
@@ -46,6 +49,7 @@ function LoginScreen({ navigation }) {
     >
       <KeyboardAvoidingView behavior="padding">
         <Formik
+          validationSchema={validationSchema}
           initialValues={{ email: "", password: "", isChecked: false }}
           onSubmit={(values) => {
             handleLogin(values);
@@ -57,6 +61,8 @@ function LoginScreen({ navigation }) {
             handleSubmit,
             values,
             setFieldValue,
+            errors,
+            touched,
           }) => (
             <View style={styles.loginContainer}>
               <Text style={styles.label}>Email:</Text>
@@ -66,6 +72,9 @@ function LoginScreen({ navigation }) {
                 onBlur={handleBlur("email")}
                 value={values.email}
               />
+              {errors.email && touched.email ? (
+                <Text style={styles.emailError}>{errors.email}</Text>
+              ) : null}
               <Text style={styles.label}>Password:</Text>
               <TextInput
                 style={styles.passwordInput}
@@ -74,6 +83,9 @@ function LoginScreen({ navigation }) {
                 onBlur={handleBlur("password")}
                 value={values.password}
               />
+              {errors.password && touched.password ? (
+                <Text style={styles.passwordError}>{errors.password}</Text>
+              ) : null}
               <Text style={styles.disclaimer}>
                 By using this App, the user agrees to indemnify and hold
                 harmless the App and its developers, affiliates, and partners

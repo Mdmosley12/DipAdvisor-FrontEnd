@@ -41,6 +41,12 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 12,
   },
+  emailError: {
+    color: "red",
+    fontStyle: "italic",
+    marginBottom: 20,
+    marginTop: -20,
+  },
   passwordInput: {
     height: 40,
     width: 280,
@@ -51,6 +57,13 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 12,
   },
+  passwordError: {
+    color: "red",
+    fontStyle: "italic",
+    marginBottom: 20,
+    marginTop: -20,
+    fontWeight: "bold",
+  },
   displayNameInput: {
     height: 40,
     width: 280,
@@ -60,6 +73,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     backgroundColor: "white",
     borderRadius: 12,
+  },
+  displayNameError: {
+    color: "red",
+    fontStyle: "italic",
+    marginBottom: 20,
+    marginTop: -20,
   },
   disclaimer: {
     backgroundColor: "white",

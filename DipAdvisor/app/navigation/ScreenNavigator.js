@@ -10,7 +10,7 @@ import AddLocationScreen from "../screens/AddLocationScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 import { SafeAreaView, StyleSheet } from "react-native";
 import { UserProvider } from "../contexts/UserContext";
-import { auth } from "../assets/firebase";
+import { auth } from "../firebase";
 
 const Stack = createStackNavigator();
 
