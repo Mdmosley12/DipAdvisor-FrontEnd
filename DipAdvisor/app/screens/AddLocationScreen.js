@@ -6,6 +6,7 @@ import {
   TextInput,
   Button,
   ImageBackground,
+  Image,
   ScrollView,
 } from "react-native";
 import { Formik } from "formik";
@@ -13,12 +14,21 @@ import { Switch } from "react-native";
 import { auth } from "../assets/firebase";
 import { addLocation } from "../utils/api";
 import { styles } from "../styles/styles.AddLocationScreen";
+import { useState } from "react";
+import "react-native-get-random-values";
+import { uploadImage, pickImage } from "../utils/imageUploads";
 
 function AddLocationScreen({ navigation }) {
+  const [image, setImage] = useState(null);
+  const [imageURL, setImageURL] = useState("");
   const handlePost = (values) => {
-    values.created_by = auth.currentUser.email;
-    addLocation(values).then(() => {
-      navigation.navigate("HomeScreen");
+    uploadImage(image, setImageURL).then(() => {
+      values.created_by = auth.currentUser.email;
+      values.image_urls = imageURL;
+      addLocation(values).then(({ location }) => {
+        const locationID = { location_id: location[0]._id };
+        navigation.navigate("SingleLocationScreen", locationID);
+      });
     });
   };
 

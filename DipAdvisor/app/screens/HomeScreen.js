@@ -52,7 +52,7 @@ const HomeScreen = ({ navigation }, props) => {
   const handleGetLocation = (values) => {
     navigation.push("SingleLocationScreen", values);
   };
-
+  console.log(userValue);
   return (
     <View style={styles.container}>
       <Formik initialValues={{ location_id: "" }} onSubmit={handleGetLocation}>
