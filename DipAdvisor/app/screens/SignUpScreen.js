@@ -1,19 +1,15 @@
 import { Formik } from "formik";
-import React, { useEffect } from "react";
-import {
-  ImageBackground,
-  KeyboardAvoidingView,
-  View,
-  Text,
-  TextInput,
-  Button,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { Button, ImageBackground, Text, TextInput, View } from "react-native";
 import { auth } from "../firebase";
 import { CheckBox } from "react-native-elements";
 import { styles } from "../styles/styles.SignUpScreen";
+import { marginTopChanger } from "../utils/marginTopChanger";
 import * as Yup from "yup";
 
 function SignUpScreen({ navigation }) {
+  const [containerMarginTop, setContainerMarginTop] = useState(125);
+  marginTopChanger(setContainerMarginTop);
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
     displayName: Yup.string()
@@ -77,7 +73,10 @@ function SignUpScreen({ navigation }) {
             errors,
             touched,
           }) => (
-            <View style={styles.loginContainer}>
+            <View style={{
+              ...styles.loginContainer,
+              marginTop: containerMarginTop,
+            }}>
               <Text style={styles.label}>Email:</Text>
               <TextInput
                 style={styles.emailInput}
@@ -123,15 +122,15 @@ function SignUpScreen({ navigation }) {
                 checked={values.isChecked}
                 onPress={() => setFieldValue("isChecked", !values.isChecked)}
               />
-              <Button
-                style={styles.button}
-                onPress={handleSubmit}
-                title="Sign Up"
-              />
             </View>
-          )}
-        </Formik>
-      </KeyboardAvoidingView>
+            <Button
+              style={styles.button}
+              onPress={handleSubmit}
+              title="Sign Up"
+            />
+          </View>
+        )}
+      </Formik>
     </ImageBackground>
   );
 }

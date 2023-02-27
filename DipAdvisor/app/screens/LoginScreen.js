@@ -1,19 +1,20 @@
-import React, { useEffect } from "react";
-import {
-  View,
-  Text,
-  ImageBackground,
-  TextInput,
-  Button,
-  KeyboardAvoidingView,
-} from "react-native";
 import { Formik } from "formik";
+import React, { useContext, useEffect, useState } from "react";
+import { Button, ImageBackground, Text, TextInput, View } from "react-native";
 import { CheckBox } from "react-native-elements";
+import { UserContext } from "../contexts/UserContext";
+import { styles } from "../styles/styles.LoginScreen";
+import { marginTopChanger } from "../utils/marginTopChanger";
 import { auth } from "../firebase";
 import { styles } from "../styles/styles.LoginScreen";
 import * as Yup from "yup";
 
 function LoginScreen({ navigation }) {
+  const userValue = useContext(UserContext);
+  const [containerMarginTop, setContainerMarginTop] = useState(125);
+
+  marginTopChanger(setContainerMarginTop);
+
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string().required("Password is required"),
@@ -45,10 +46,8 @@ function LoginScreen({ navigation }) {
 
   return (
     <ImageBackground
-      style={styles.background}
       source={require("../assets/WelcomeScreenImg.jpg")}
-    >
-      <KeyboardAvoidingView behavior="padding">
+      style={styles.background}>
         <Formik
           validationSchema={validationSchema}
           initialValues={{ email: "", password: "", isChecked: false }}
@@ -65,7 +64,7 @@ function LoginScreen({ navigation }) {
             errors,
             touched,
           }) => (
-            <View style={styles.loginContainer}>
+            <View style={{...styles.loginContainer, marginTop: containerMarginTop}}>
               <Text style={styles.label}>Email:</Text>
               <TextInput
                 style={styles.emailInput}
@@ -107,7 +106,6 @@ function LoginScreen({ navigation }) {
             </View>
           )}
         </Formik>
-      </KeyboardAvoidingView>
     </ImageBackground>
   );
 }
