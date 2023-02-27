@@ -95,22 +95,25 @@ function MapViewScreen({ navigation }) {
                 title={marker.location_name + "666"}
                 onPress={() => handleMarkerPress(marker)}
               >
+                {/* //////////////callout section a work in progress
                 {selectedMarker === marker && (
                   <Callout>
                     <View style={styles.calloutContainer}>
-                      {/* //Text not showing */}
+                      {/* //Text not showing 
                       <Text style={styles.calloutTitle}>
-                        {/* //42 put in to see which title is appearing */}
+                       
+                      //// 42 put in to see which title is appearing /////////
                         {marker.location_name + "42"}
                       </Text>
-                      {/* //Image not showing */}
+                      {/* /////////////Image not showing //////////////////
                       <Image
                         source={{ uri: marker.images }}
                         style={styles.calloutImage}
                       />
                     </View>
-                  </Callout>
-                )}
+                  </Callout> 
+                  
+                )}//// */}
               </Marker>
             );
           })}
