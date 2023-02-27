@@ -11,9 +11,11 @@ import MapView, { Marker, Callout } from "react-native-maps";
 import * as Location from "expo-location";
 import { useState, useEffect } from "react";
 import { getAllLocations } from "../utils/api";
+import Loading from "../components/Loading";
+import styles from "../styles/styles.MapViewScreen";
 
 function MapViewScreen({ navigation }) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [mapMarkers, setMapMarkers] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -34,50 +36,46 @@ function MapViewScreen({ navigation }) {
   }, []);
 
   useEffect(() => {
-    setIsLoading(true);
-    getAllLocations().then((data) => {
-      const allCoordinates = data.map((location) => {
-        return {
-          id: location._id,
-          location_name: location.location_name,
-          coordinate: {
-            latitude: location.coordinates[0],
-            longitude: location.coordinates[1],
-          },
-          images: location.image_urls[0],
-        };
+    setLoading(true);
+    getAllLocations()
+      .then((data) => {
+        const allCoordinates = data.map((location) => {
+          return {
+            id: location._id,
+            location_name: location.location_name,
+            coordinate: {
+              latitude: location.coordinates[0],
+              longitude: location.coordinates[1],
+            },
+            images: location.image_urls[0],
+          };
+        });
+        setMapMarkers(allCoordinates);
+        setLoading(false);
+      })
+      .catch((error) => {
+        alert(error.message);
+        navigation.navigate("HomeScreen");
       });
-      setMapMarkers(allCoordinates);
-      //Each one has a route set up for /api/locations/:id where id = _id value
-      setIsLoading(false);
-    });
   }, []);
 
-  console.log(mapMarkers, "<<<map markers");
-  console.log(userLocation, "<<<user location");
-
   const handleMarkerPress = (markerid) => {
-    console.log(markerid);
     setSelectedMarker(markerid);
   };
 
   const markerClick = () => {
-    console.log("callout clicked", selectedMarker);
     navigation.navigate("Home", {
       screen: "SingleLocationScreen",
       params: { location_id: selectedMarker },
     });
   };
-  //functions to use:
-  //onRegionChange callback function
-  //onMarkerSelect
-  //onMarkerPress
-  //showCallout
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Find your nearest outdoor swimming location</Text>
-
       {userLocation && (
         <MapView
           style={styles.map}
@@ -97,16 +95,16 @@ function MapViewScreen({ navigation }) {
               <Marker
                 key={index}
                 coordinate={marker.coordinate}
-                title={marker.location_name + "666"}
+                title={marker.location_name}
                 onPress={() => handleMarkerPress(marker.id)}
               >
                 {/* //////////////callout section a work in progress
-                {selectedMarker === marker && (
+                   Free versions are too slow to render images within map, can uncomment this if upgrade */}
+                {/* {selectedMarker === marker && (
                   <Callout>
                     <View style={styles.calloutContainer}>
                     
-                      {/* /////////////Image not showing //////////////////
-                      {/* Free versions are too slow to render images, can uncomment this if */}
+                      
                 {/* {marker.images !== undefined ? (
                       <Image
                       source={{ uri: marker.images }}
@@ -126,34 +124,5 @@ function MapViewScreen({ navigation }) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    height: "100%",
-    width: "100%",
-    justifyContent: "flex-end",
-    alignItems: "center",
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  calloutContainer: {
-    width: 160,
-    height: 200,
-    alignItems: "center",
-  },
-  calloutTitle: {
-    textAlign: "center",
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  calloutImage: {
-    width: "100%",
-    height: "80%",
-    resizeMode: "cover",
-  },
-});
 
 export default MapViewScreen;
