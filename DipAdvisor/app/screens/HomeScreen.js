@@ -45,9 +45,16 @@ const HomeScreen = ({ navigation }) => {
     });
   }, []);
 
+<<<<<<< HEAD
   // const handleGetLocation = (values) => {
   //   navigation.push("SingleLocationScreen", values);
   // };
+=======
+  const handleGetLocation = (values) => {
+    navigation.push("SingleLocationScreen", values);
+  };
+  console.log(userValue);
+>>>>>>> 11d3d16bb1ac0b3ad6484f59b7be388d5bc42f6e
   return (
     <View style={styles.container}>
       <View style={styles.backgroundWelcome}>

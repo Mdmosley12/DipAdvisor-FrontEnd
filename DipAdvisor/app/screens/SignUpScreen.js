@@ -22,6 +22,7 @@ function SignUpScreen({ navigation }) {
           console.log("Signed up with:", user.email);
           user.updateProfile({
             displayName: values.displayName,
+            displayName: values.displayName,
           });
         })
         .catch((error) => alert(error.message));
