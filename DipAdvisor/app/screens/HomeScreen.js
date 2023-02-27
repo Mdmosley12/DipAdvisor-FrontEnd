@@ -55,37 +55,7 @@ const HomeScreen = ({ navigation }, props) => {
 
   return (
     <View style={styles.container}>
-      <Formik initialValues={{ location_id: "" }} onSubmit={handleGetLocation}>
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
-          <View style={styles.searchContainer}>
-            <TextInput
-              style={styles.input}
-              onChangeText={handleChange("location_id")}
-              onBlur={handleBlur("location_id")}
-              value={values.location_id}
-              placeholder="Search (Location ID)"
-              placeholderTextColor="#9B9B9B"
-              keyboardType="numeric"
-              returnKeyType="send"
-              onSubmitEditing={handleSubmit}
-            />
-            <TouchableOpacity
-              activeOpacity={1}
-              onPress={() => Keyboard.dismiss()}
-            >
-              <Ionicons
-                style={styles.icon}
-                name="search"
-                size={24}
-                color="#000000"
-              />
-            </TouchableOpacity>
-          </View>
-        )}
-      </Formik>
-
       <View style={styles.backgroundWelcome}>
-        <Text>Welcome {auth.currentUser?.displayName}</Text>
         <Text>Where's today's dip {auth.currentUser.displayName}?</Text>
         <PopularSpotsBox popularSpots={popularSpots} />
       </View>
