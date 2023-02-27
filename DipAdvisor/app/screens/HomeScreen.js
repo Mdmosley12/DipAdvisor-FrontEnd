@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { auth } from "../assets/firebase";
+import { UserContext } from "../contexts/UserContext";
+import { useContext } from "react";
+import { auth } from "../firebase";
 import { getTopLocations } from "../utils/api";
 import { styles } from "../styles/styles.HomeScreen";
 import { Text, Image, TouchableOpacity, View } from "react-native";

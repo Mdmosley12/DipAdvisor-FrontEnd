@@ -8,9 +8,14 @@ import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import "firebase/storage";
 
-function ImagePickerExample() {
-  const [image, setImage] = useState(null);
-  const [imageURL, setImageURL] = useState("");
+function ImagePickerExample(
+  { image },
+  { setImage },
+  { imageURL },
+  { setImageURL }
+) {
+  // const [image, setImage] = useState(null);
+  // const [imageURL, setImageURL] = useState("");
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -65,13 +70,19 @@ function ImagePickerExample() {
       {image && (
         <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
       )}
-      <Button title="Upload image" onPress={uploadImage}></Button>
     </View>
   );
 }
 
-function Upload(props) {
-  return <ImagePickerExample />;
+function Upload({ image }, { setImage }, { imageURL }, { setImageURL }) {
+  return (
+    <ImagePickerExample
+      image={image}
+      setImage={setImage}
+      imageURL={imageURL}
+      setImageURL={setImageURL}
+    />
+  );
 }
 
 const styles = StyleSheet.create({
