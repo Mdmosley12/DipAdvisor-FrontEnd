@@ -22,10 +22,12 @@ import * as ImagePicker from "expo-image-picker";
 function AddLocationScreen({ navigation }) {
   const [image, setImage] = useState(null);
   const [imageURL, setImageURL] = useState("");
+
   const handlePost = (values) => {
     uploadImage(image, setImageURL).then(() => {
       values.created_by = auth.currentUser.email;
       values.image_urls = imageURL;
+
       addLocation(values).then(({ location }) => {
         const locationID = { location_id: location[0]._id };
         navigation.navigate("SingleLocationScreen", locationID);

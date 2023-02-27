@@ -40,7 +40,7 @@ const PopularSpotBox = ({ spot }) => {
   );
 };
 
-const HomeScreen = ({ navigation }, props) => {
+const HomeScreen = ({ navigation }) => {
   const userValue = useContext(UserContext);
   const [popularSpots, setPopularSpots] = useState([]);
   useEffect(() => {
