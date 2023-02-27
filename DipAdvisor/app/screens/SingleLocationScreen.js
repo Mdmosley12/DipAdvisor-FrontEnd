@@ -6,6 +6,7 @@ import { getSingleLocation, patchLocation } from "../utils/api";
 import { styles, width } from "../styles/styles.SingleLocationScreen";
 
 function SingleLocationScreen({ route, navigation }) {
+  console.log(route, "<<<route on singelocationscreen");
   const { location_id } = route.params;
   if (!location_id) return navigation.navigate("HomeScreen");
   const [location, setLocation] = useState({});

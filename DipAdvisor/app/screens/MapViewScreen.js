@@ -56,12 +56,17 @@ function MapViewScreen({ navigation }) {
   console.log(mapMarkers, "<<<map markers");
   console.log(userLocation, "<<<user location");
 
-  const handleMarkerPress = (marker) => {
-    setSelectedMarker(marker);
+  const handleMarkerPress = (markerid) => {
+    console.log(markerid);
+    setSelectedMarker(markerid);
   };
 
   const markerClick = () => {
-    console.log("callout clicked");
+    console.log("callout clicked", selectedMarker);
+    navigation.navigate("Home", {
+      screen: "SingleLocationScreen",
+      params: { location_id: selectedMarker },
+    });
   };
   //functions to use:
   //onRegionChange callback function
@@ -93,24 +98,22 @@ function MapViewScreen({ navigation }) {
                 key={index}
                 coordinate={marker.coordinate}
                 title={marker.location_name + "666"}
-                onPress={() => handleMarkerPress(marker)}
+                onPress={() => handleMarkerPress(marker.id)}
               >
                 {/* //////////////callout section a work in progress
                 {selectedMarker === marker && (
                   <Callout>
                     <View style={styles.calloutContainer}>
-                      {/* //Text not showing 
-                      <Text style={styles.calloutTitle}>
-                       
-                      //// 42 put in to see which title is appearing /////////
-                        {marker.location_name + "42"}
-                      </Text>
+                    
                       {/* /////////////Image not showing //////////////////
+                      {/* Free versions are too slow to render images, can uncomment this if */}
+                {/* {marker.images !== undefined ? (
                       <Image
-                        source={{ uri: marker.images }}
-                        style={styles.calloutImage}
+                      source={{ uri: marker.images }}
+                      style={styles.calloutImage}
                       />
-                    </View>
+                      ) : null} 
+                    </View> 
                   </Callout> 
                   
                 )}//// */}
