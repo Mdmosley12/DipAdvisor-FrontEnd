@@ -22,7 +22,13 @@ const PopularSpotsBox = ({ popularSpots, navigation }) => {
         }}
       >
         {popularSpots.map((spot) => {
-          return <PopularSpotBox spot={spot} key={spot._id} />;
+          return (
+            <PopularSpotBox
+              spot={spot}
+              key={spot._id}
+              navigation={navigation}
+            />
+          );
         })}
       </View>
     </ScrollView>
@@ -63,7 +69,7 @@ const HomeScreen = ({ navigation }) => {
         <Text style={styles.heading}>
           Where's today's dip {auth.currentUser.displayName}?
         </Text>
-        <PopularSpotsBox popularSpots={popularSpots} />
+        <PopularSpotsBox popularSpots={popularSpots} navigation={navigation} />
       </View>
     </View>
   );
