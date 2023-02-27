@@ -1,5 +1,5 @@
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from "../assets/firebase";
+import { storage } from "../firebase";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import * as ImagePicker from "expo-image-picker";

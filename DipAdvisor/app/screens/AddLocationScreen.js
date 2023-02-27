@@ -6,22 +6,33 @@ import {
   TextInput,
   Button,
   ImageBackground,
-  Image,
   ScrollView,
 } from "react-native";
 import { Formik } from "formik";
 import { Switch } from "react-native";
-import { auth } from "../assets/firebase";
+import { auth } from "../firebase";
 import { addLocation } from "../utils/api";
 import { styles } from "../styles/styles.AddLocationScreen";
 import { useState } from "react";
 import "react-native-get-random-values";
-import { uploadImage } from "../utils/imageUploads";
+import { uploadImage, pickImage } from "../utils/imageUploads";
+import * as Yup from "yup";
 import * as ImagePicker from "expo-image-picker";
 
 function AddLocationScreen({ navigation }) {
   const [image, setImage] = useState(null);
   const [imageURL, setImageURL] = useState("");
+
+  const validationSchema = Yup.object().shape({
+    location_name: Yup.string()
+      .min(2, "Too short!")
+      .max(20, "Too long!")
+      .required("Location name required"),
+    description: Yup.string()
+      .min(5, "Too short!")
+      .max(200, "Too long!")
+      .required("Brief description required"),
+  });
 
   const handlePost = (values) => {
     uploadImage(image, setImageURL).then(() => {
@@ -54,6 +65,7 @@ function AddLocationScreen({ navigation }) {
       <ScrollView>
         <KeyboardAvoidingView style={styles.background}>
           <Formik
+            validationSchema={validationSchema}
             initialValues={{
               location_name: "",
               description: "",
@@ -67,6 +79,8 @@ function AddLocationScreen({ navigation }) {
               handleSubmit,
               values,
               setFieldValue,
+              errors,
+              touched,
             }) => (
               <View style={styles.formContainer}>
                 <Text style={styles.label}>Location Name:</Text>
@@ -76,6 +90,11 @@ function AddLocationScreen({ navigation }) {
                   onBlur={handleBlur("location_name")}
                   value={values.location_name}
                 />
+                {errors.location_name && touched.location_name ? (
+                  <Text style={styles.locationNameError}>
+                    {errors.location_name}
+                  </Text>
+                ) : null}
                 <Text style={styles.label}>Description:</Text>
                 <TextInput
                   multiline={true}
@@ -84,17 +103,22 @@ function AddLocationScreen({ navigation }) {
                   onBlur={handleBlur("description")}
                   value={values.description}
                 />
-                <Button
-                  title="Select photo"
-                  onPress={() => pickImage(setImage)}
-                />
-                {image && (
-                  <Image
-                    source={{ uri: image }}
-                    style={{ width: 200, height: 200, padding: 20 }}
-                  />
-                )}
+                {errors.description && touched.description ? (
+                  <Text style={styles.descriptionError}>
+                    {errors.description}
+                  </Text>
+                ) : null}
                 <Text style={styles.label}>
+                  <Button
+                    title="Select photo"
+                    onPress={() => pickImage(setImage)}
+                  />
+                  {image && (
+                    <Image
+                      source={{ uri: image }}
+                      style={{ width: 200, height: 200 }}
+                    />
+                  )}
                   Is this location on public land?
                 </Text>
                 <View style={styles.switchContainer}>

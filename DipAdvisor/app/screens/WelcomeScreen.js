@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { styles } from "../styles/styles.WelcomeScreen";
-import { auth } from "../assets/firebase";
+import { auth } from "../firebase";
 
 function WelcomeScreen({ navigation }) {
   return (
