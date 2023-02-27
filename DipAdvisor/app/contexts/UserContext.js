@@ -1,10 +1,10 @@
 import { createContext, useState } from "react";
-import { auth } from "../assets/firebase";
+import { auth } from "../firebase";
 
 export const UserContext = createContext();
 
 export const UserProvider = (props) => {
-  const [user, setUser] = useState({ name: "Ben" });
+  const [user, setUser] = useState({ name: "hello" });
 
   return (
     <UserContext.Provider value={{ user, setUser }}>

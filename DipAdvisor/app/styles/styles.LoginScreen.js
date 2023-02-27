@@ -7,10 +7,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   loginContainer: {
-    backgroundColor: "#fff",
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
     borderRadius: 8,
     width: "80%",
-    height: 350,
+    height: 460,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -42,6 +42,12 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 8,
   },
+  emailError: {
+    color: "red",
+    fontStyle: "italic",
+    marginBottom: 20,
+    marginTop: -20,
+  },
   passwordInput: {
     height: 30,
     width: 240,
@@ -50,12 +56,27 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     backgroundColor: "white",
-    borderRadius: 8,
+    borderRadius: 12,
+  },
+  passwordError: {
+    color: "red",
+    fontStyle: "italic",
+    marginBottom: 20,
+    marginTop: -20,
+  },
+  label: {
+    alignSelf: "flex-start",
+    marginBottom: 5,
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  button: {
+    marginTop: 20,
   },
   disclaimer: {
-    marginBottom: 5,
-    width: 240,
-    fontSize: 12,
+    backgroundColor: "white",
+    marginBottom: 10,
+    width: 280,
     fontWeight: "bold",
   },
 });

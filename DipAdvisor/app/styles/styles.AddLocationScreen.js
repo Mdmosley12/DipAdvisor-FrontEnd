@@ -40,6 +40,12 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 12,
   },
+  locationNameError: {
+    color: "red",
+    fontStyle: "italic",
+    marginBottom: 20,
+    marginTop: -20,
+  },
   descriptionInput: {
     height: 130,
     width: 280,
@@ -49,6 +55,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     backgroundColor: "white",
     borderRadius: 12,
+  },
+  descriptionError: {
+    color: "red",
+    fontStyle: "italic",
+    marginBottom: 20,
+    marginTop: -20,
   },
   switchContainer: {
     flexDirection: "row",

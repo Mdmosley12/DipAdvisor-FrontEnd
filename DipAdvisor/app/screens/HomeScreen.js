@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { useContext } from "react";
-import { auth } from "../assets/firebase";
+import { auth } from "../firebase";
 import { getTopLocations } from "../utils/api";
 import { Ionicons } from "@expo/vector-icons";
 import { Formik } from "formik";
@@ -52,7 +52,7 @@ const HomeScreen = ({ navigation }, props) => {
   const handleGetLocation = (values) => {
     navigation.push("SingleLocationScreen", values);
   };
-
+  console.log(userValue);
   return (
     <View style={styles.container}>
       <Formik initialValues={{ location_id: "" }} onSubmit={handleGetLocation}>
