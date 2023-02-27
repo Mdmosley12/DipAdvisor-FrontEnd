@@ -6,6 +6,7 @@ import { getTopLocations } from "../utils/api";
 import { Ionicons } from "@expo/vector-icons";
 import { Formik } from "formik";
 import { styles } from "../styles/styles.HomeScreen";
+import icon from "../assets/icon.png";
 
 import {
   Keyboard,
