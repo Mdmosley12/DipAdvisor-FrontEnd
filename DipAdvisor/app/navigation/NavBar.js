@@ -23,7 +23,7 @@ function NavBar(props) {
       <Tab.Screen
         name="Add Swim Spot"
         component={AddLocationScreen}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, tabBarVisible: false }}
       />
     </Tab.Navigator>
   );

@@ -23,7 +23,6 @@ function SignUpScreen({ navigation }) {
           user.updateProfile({
             displayName: values.displayName,
           });
-          console.log(user.displayName);
         })
         .catch((error) => alert(error.message));
     }
