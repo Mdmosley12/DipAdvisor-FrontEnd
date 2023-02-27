@@ -5,7 +5,6 @@ import WelcomeScreen from "./app/screens/WelcomeScreen";
 import LoginScreen from "./app/screens/LoginScreen";
 import HomeScreen from "./app/screens/HomeScreen";
 import SignUpScreen from "./app/screens/SignUpScreen";
-import UploadImage from "./app/screens/UploadImage";
 
 import NavBar from "./app/navigation/NavBar";
 

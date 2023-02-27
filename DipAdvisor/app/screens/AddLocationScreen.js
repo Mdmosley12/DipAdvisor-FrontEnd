@@ -8,7 +8,6 @@ import {
   ImageBackground,
   Image,
   ScrollView,
-  ScrollView,
 } from "react-native";
 import { Formik } from "formik";
 import { Switch } from "react-native";
