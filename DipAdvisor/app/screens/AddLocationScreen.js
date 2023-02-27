@@ -13,9 +13,15 @@ import { Switch } from "react-native";
 import { auth } from "../firebase";
 import { addLocation } from "../utils/api";
 import { styles } from "../styles/styles.AddLocationScreen";
+import { useState } from "react";
+import "react-native-get-random-values";
+import { uploadImage, pickImage } from "../utils/imageUploads";
 import * as Yup from "yup";
 
 function AddLocationScreen({ navigation }) {
+  const [image, setImage] = useState(null);
+  const [imageURL, setImageURL] = useState("");
+
   const validationSchema = Yup.object().shape({
     location_name: Yup.string()
       .min(2, "Too short!")
@@ -28,9 +34,13 @@ function AddLocationScreen({ navigation }) {
   });
 
   const handlePost = (values) => {
-    values.created_by = auth.currentUser.email;
-    addLocation(values).then(() => {
-      navigation.navigate("HomeScreen");
+    uploadImage(image, setImageURL).then(() => {
+      values.created_by = auth.currentUser.email;
+      values.image_urls = imageURL;
+      addLocation(values).then(({ location }) => {
+        const locationID = { location_id: location[0]._id };
+        navigation.navigate("SingleLocationScreen", locationID);
+      });
     });
   };
 
