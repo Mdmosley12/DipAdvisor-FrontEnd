@@ -36,14 +36,26 @@ function AddLocationScreen({ navigation }) {
   });
 
   const handlePost = (values) => {
-    uploadImage(image, setImageURL).then((url) => {
-      values.created_by = auth.currentUser.email;
-      values.image_urls = imageURL;
-      addLocation(values).then(({ location }) => {
+    uploadImage(image, setImageURL)
+      .then((url) => {
+        values.created_by = auth.currentUser.email;
+        values.image_urls = [imageURL];
+        values.coordinates = [54.449505, -3.284804];
+      })
+      .then(() => {
+        setTimeout(() => {
+          console.log(values, "values");
+        });
+      }, 2000);
+
+    addLocation(values)
+      .then(({ location }) => {
         const locationID = { location_id: location[0]._id };
         navigation.navigate("SingleLocationScreen", locationID);
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    });
   };
   const pickImage = async (setImage) => {
     let result = await ImagePicker.launchImageLibraryAsync({

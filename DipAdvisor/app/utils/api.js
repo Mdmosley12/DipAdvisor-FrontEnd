@@ -28,6 +28,7 @@ export const getTopLocations = () => {
 
 export const addLocation = (body) => {
   return DipAdvisorAPI.post("/locations", body).then(({ data }) => {
+    console.log(data, "addlocation data");
     return data;
   });
 };
@@ -41,7 +42,7 @@ export const getAllLocations = () => {
 export const addPhotoToLocation = (body, location_id) => {
   return DipAdvisorAPI.patch(`/photos/${location_id}`, body).then(
     ({ data: { location } }) => {
-      return { location };
+      return location;
     }
   );
 };

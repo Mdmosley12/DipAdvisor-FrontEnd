@@ -66,18 +66,21 @@ function SingleLocationScreen({ route, navigation }) {
     return <Loading />;
   }
 
-  const add = (imageUrl) => {
-    const body = { url: imageUrl };
-    addPhotoToLocation(body, location_id).then((place) => {});
-  };
-  const addPhoto = async (image, setImageUrl, imageUrl) => {
-    //the image is uploaded to firebase
-    //the imageUrl is set
-    //the patch request takes the body and location
-    //the location is re-rendered
+  const addPhoto = (image, setImageUrl, imageUrl) => {
+    const values = {};
+    uploadImage(image, setImageUrl)
+      .then((url) => {
+        values.image_urls = [imageUrl];
+      })
+      .then(() => {
+        setTimeout(() => {
+          console.log(values, "upload imge");
+        }, 2000);
+      });
 
-    await uploadImage(image, setImageUrl).then(() => {
-      add(imageUrl);
+    const body = { url: imageUrl };
+    addPhotoToLocation(body, location_id).then((place) => {
+      console.log(place, "return of addphoto");
     });
   };
 
