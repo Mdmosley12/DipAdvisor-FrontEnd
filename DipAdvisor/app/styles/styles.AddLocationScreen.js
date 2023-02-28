@@ -77,10 +77,6 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     fontStyle: "italic",
   },
-  map: {
-    width: "100%",
-    height: "20%",
-  },
 });
 
 module.exports = { styles };

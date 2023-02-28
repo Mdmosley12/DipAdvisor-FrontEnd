@@ -18,7 +18,6 @@ import { uploadImage, pickImage } from "../utils/imageUploads";
 import * as Yup from "yup";
 import * as ImagePicker from "expo-image-picker";
 import * as Location from "expo-location";
-import MapView, { Marker } from "react-native-maps";
 import { addLocation } from "../utils/api";
 import { styles } from "../styles/styles.AddLocationScreen";
 import PostLocationCoords from "./PostLocationCoords";
@@ -27,7 +26,10 @@ function AddLocationScreen({ navigation }) {
   const [image, setImage] = useState(null);
   const [imageURL, setImageURL] = useState("");
   const [userLocation, setUserLocation] = useState(null);
-  const [pinCoords, setPinCoords] = useState(userLocation);
+  const [pinCoords, setPinCoords] = useState({
+    latitude: 51.146592,
+    longitude: -0.063179,
+  });
 
   useEffect(() => {
     (async () => {
@@ -39,7 +41,7 @@ function AddLocationScreen({ navigation }) {
 
       let location = await Location.getCurrentPositionAsync({});
       setUserLocation(location);
-      console.log(location, "<<<add location page");
+      setPinCoords(location);
     })();
   }, []);
 
@@ -58,6 +60,7 @@ function AddLocationScreen({ navigation }) {
     uploadImage(image, setImageURL).then(() => {
       values.created_by = auth.currentUser.email;
       values.image_urls = imageURL;
+      values.coordinates = [pinCoords.latitude, pinCoords.longitude];
       addLocation(values).then(({ location }) => {
         const locationID = { location_id: location[0]._id };
         navigation.navigate("SingleLocationScreen", locationID);
@@ -83,7 +86,9 @@ function AddLocationScreen({ navigation }) {
     >
       <ScrollView>
         <KeyboardAvoidingView style={styles.background}>
-          <Text>Select the swimming spots location</Text>
+          <Text style={styles.label} multiline={true}>
+            Hold pin to drag to swim location.
+          </Text>
           <PostLocationCoords
             setPinCoords={setPinCoords}
             userLocation={userLocation}
@@ -94,8 +99,10 @@ function AddLocationScreen({ navigation }) {
               location_name: "",
               description: "",
               public: false,
+              coordinates: pinCoords,
             }}
             onSubmit={handlePost}
+            enableReinitialize={true}
           >
             {({
               handleChange,

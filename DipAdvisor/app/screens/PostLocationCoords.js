@@ -1,14 +1,15 @@
 import { Text, View, SafeAreaView } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import { useState, useEffect } from "react";
-import * as Location from "expo-location";
 
 import { styles } from "../styles/styles.PostLocationCoords";
 
 function PostLocationCoords({ userLocation, setPinCoords }) {
   const log = (eventName, e) => {
     console.log(eventName, e.nativeEvent);
-    if (eventName === "onDragEnd") setPinCoords(e.nativeEvent.coordinate);
+    if (eventName === "onDragEnd") {
+      setPinCoords(e.nativeEvent.coordinate);
+      console.log(e.nativeEvent.coordinate, "pinCoords");
+    }
   };
 
   if (!userLocation) {
