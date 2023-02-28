@@ -65,10 +65,11 @@ function MapViewScreen({ navigation }) {
   };
 
   const markerClick = () => {
-    navigation.navigate("Home", {
-      screen: "SingleLocationScreen",
-      params: { location_id: selectedMarker },
-    });
+    navigation.navigate(
+      "SingleLocationScreen",
+
+      { location_id: selectedMarker }
+    );
   };
 
   if (loading) {
