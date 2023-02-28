@@ -12,16 +12,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: "right",
   },
-
-  // background: {
-  //   flex: 1,
-  //   padding: 20,
-  // },
   heading: {
     fontSize: 18,
     fontWeight: "bold",
     marginTop: 20,
     marginBottom: 10,
+  },
+  popularSpotsContainer: {
+    flexWrap: "wrap",
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   votes: {
     fontSize: 12,

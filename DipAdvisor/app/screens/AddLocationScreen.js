@@ -14,9 +14,9 @@ import { Switch } from "react-native";
 import { auth } from "../firebase";
 import { useState, useEffect } from "react";
 import "react-native-get-random-values";
-import { uploadImage, pickImage } from "../utils/imageUploads";
-import * as Yup from "yup";
+import { uploadImage } from "../utils/imageUploads";
 import * as ImagePicker from "expo-image-picker";
+import { addLocationValidationSchema } from "../utils/addLocationValidationSchema";
 import * as Location from "expo-location";
 import { addLocation } from "../utils/api";
 import { styles } from "../styles/styles.AddLocationScreen";
@@ -45,17 +45,6 @@ function AddLocationScreen({ navigation }) {
     })();
   }, []);
 
-  const validationSchema = Yup.object().shape({
-    location_name: Yup.string()
-      .min(2, "Too short!")
-      .max(20, "Too long!")
-      .required("Location name required"),
-    description: Yup.string()
-      .min(5, "Too short!")
-      .max(200, "Too long!")
-      .required("Brief description required"),
-  });
-
   const handlePost = (values) => {
     uploadImage(image, setImageURL).then(() => {
       values.created_by = auth.currentUser.email;
@@ -63,10 +52,13 @@ function AddLocationScreen({ navigation }) {
       values.coordinates = [pinCoords.latitude, pinCoords.longitude];
       addLocation(values).then(({ location }) => {
         const locationID = { location_id: location[0]._id };
-        navigation.navigate("SingleLocationScreen", locationID);
+        navigation.navigate("SingleLocationScreen", {
+          location_id: locationID,
+        });
       });
     });
   };
+
   const pickImage = async (setImage) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -74,11 +66,11 @@ function AddLocationScreen({ navigation }) {
       aspect: [4, 3],
       quality: 1,
     });
-
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
   };
+
   return (
     <ImageBackground
       style={styles.background}
@@ -94,7 +86,7 @@ function AddLocationScreen({ navigation }) {
             userLocation={userLocation}
           />
           <Formik
-            validationSchema={validationSchema}
+            validationSchema={addLocationValidationSchema}
             initialValues={{
               location_name: "",
               description: "",
@@ -144,6 +136,7 @@ function AddLocationScreen({ navigation }) {
                     {errors.description}
                   </Text>
                 ) : null}
+
                 <Button
                   title="Select photo"
                   onPress={() => pickImage(setImage)}
@@ -154,6 +147,7 @@ function AddLocationScreen({ navigation }) {
                     style={{ width: 200, height: 200 }}
                   />
                 )}
+
                 <Text style={styles.label}>
                   Is this location on public land?
                 </Text>

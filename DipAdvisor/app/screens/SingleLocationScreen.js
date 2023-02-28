@@ -8,10 +8,10 @@ import { getSingleLocation, patchLocation } from "../utils/api";
 import { checkAdmin } from "../utils/checkAdmin";
 
 function SingleLocationScreen({ route, navigation }) {
-  const { location_id } = route.params;
-  if (!location_id) return navigation.navigate("HomeScreen");
   const [location, setLocation] = useState({});
   const [loading, setLoading] = useState(true);
+  const { location_id } = route.params;
+  if (!location_id) return navigation.navigate("HomeScreen");
 
   useEffect(() => {
     getSingleLocation(location_id)
