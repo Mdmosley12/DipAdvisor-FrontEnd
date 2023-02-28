@@ -45,19 +45,26 @@ function AddLocationScreen({ navigation }) {
     })();
   }, []);
 
-  const handlePost = (values) => {
-    uploadImage(image, setImageURL).then(() => {
+  const handlePost = async (values) => {
+    await uploadImage(image, setImageURL).then(() => {
       values.created_by = auth.currentUser.email;
-      values.image_urls = imageURL;
+      values.image_urls = [imageURL];
       values.coordinates = [pinCoords.latitude, pinCoords.longitude];
       addLocation(values).then(({ location }) => {
+        console.log(values, "<<<add location in next .then ");
         const locationID = { location_id: location[0]._id };
         navigation.navigate("SingleLocationScreen", {
           location_id: locationID,
         });
       });
+
+      //getting Alert - Request failed with status code 400 up on phone after adding.
+      //Is uploading to database and adding to map.
+      //resetForm();
     });
   };
+
+  console.log(imageURL, "<<< image url useState outside handlePost");
 
   const pickImage = async (setImage) => {
     let result = await ImagePicker.launchImageLibraryAsync({
