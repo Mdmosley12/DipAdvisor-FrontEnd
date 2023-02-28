@@ -32,6 +32,7 @@ function MapViewScreen({ navigation }) {
 
       let location = await Location.getCurrentPositionAsync({});
       setUserLocation(location);
+      // console.log(location, "maps");
     })();
   }, []);
 
@@ -88,6 +89,7 @@ function MapViewScreen({ navigation }) {
           showsUserLocation={true}
           showsScale={true}
           zoomEnabled={true}
+          loadingEnabled={true}
           onCalloutPress={markerClick}
         >
           {mapMarkers.map((marker, index) => {

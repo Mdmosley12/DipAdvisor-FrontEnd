@@ -5,23 +5,43 @@ import {
   KeyboardAvoidingView,
   TextInput,
   Button,
+  Image,
   ImageBackground,
   ScrollView,
 } from "react-native";
 import { Formik } from "formik";
 import { Switch } from "react-native";
 import { auth } from "../firebase";
-import { addLocation } from "../utils/api";
-import { styles } from "../styles/styles.AddLocationScreen";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "react-native-get-random-values";
 import { uploadImage, pickImage } from "../utils/imageUploads";
 import * as Yup from "yup";
 import * as ImagePicker from "expo-image-picker";
+import * as Location from "expo-location";
+import MapView, { Marker } from "react-native-maps";
+import { addLocation } from "../utils/api";
+import { styles } from "../styles/styles.AddLocationScreen";
+import PostLocationCoords from "./PostLocationCoords";
 
 function AddLocationScreen({ navigation }) {
   const [image, setImage] = useState(null);
   const [imageURL, setImageURL] = useState("");
+  const [userLocation, setUserLocation] = useState(null);
+  const [pinCoords, setPinCoords] = useState(userLocation);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setUserLocation(location);
+      console.log(location, "<<<add location page");
+    })();
+  }, []);
 
   const validationSchema = Yup.object().shape({
     location_name: Yup.string()
@@ -63,6 +83,11 @@ function AddLocationScreen({ navigation }) {
     >
       <ScrollView>
         <KeyboardAvoidingView style={styles.background}>
+          <Text>Select the swimming spots location</Text>
+          <PostLocationCoords
+            setPinCoords={setPinCoords}
+            userLocation={userLocation}
+          />
           <Formik
             validationSchema={validationSchema}
             initialValues={{
@@ -83,18 +108,22 @@ function AddLocationScreen({ navigation }) {
             }) => (
               <View style={styles.formContainer}>
                 <Text style={styles.label}>Location Name:</Text>
+
                 <TextInput
                   style={styles.location_nameInput}
                   onChangeText={handleChange("location_name")}
                   onBlur={handleBlur("location_name")}
                   value={values.location_name}
                 />
+
                 {errors.location_name && touched.location_name ? (
                   <Text style={styles.locationNameError}>
                     {errors.location_name}
                   </Text>
                 ) : null}
+
                 <Text style={styles.label}>Description:</Text>
+
                 <TextInput
                   multiline={true}
                   style={styles.descriptionInput}
@@ -102,11 +131,13 @@ function AddLocationScreen({ navigation }) {
                   onBlur={handleBlur("description")}
                   value={values.description}
                 />
+
                 {errors.description && touched.description ? (
                   <Text style={styles.descriptionError}>
                     {errors.description}
                   </Text>
                 ) : null}
+
                 <Text style={styles.label}>
                   <Button
                     title="Select photo"
@@ -120,6 +151,7 @@ function AddLocationScreen({ navigation }) {
                   )}
                   Is this location on public land?
                 </Text>
+
                 <View style={styles.switchContainer}>
                   <Text style={styles.no}>No</Text>
                   <Switch
@@ -130,12 +162,14 @@ function AddLocationScreen({ navigation }) {
                   />
                   <Text style={styles.yes}>Yes</Text>
                 </View>
+
                 {!values.public ? (
                   <Text style={styles.privateWarning}>
                     By clicking "Add Location", I confirm I have recieved
                     express permission to swim from the land owner.
                   </Text>
                 ) : null}
+
                 <Button
                   style={styles.button}
                   onPress={handleSubmit}
