@@ -1,7 +1,15 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import React, { useEffect, useState } from "react";
-import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import {
+  Alert,
+  FlatList,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Loading from "../components/Loading";
+import { LocationsContext } from "../contexts/LocationsContext";
 import { auth } from "../firebase";
 import { styles, width } from "../styles/styles.SingleLocationScreen";
 import { getSingleLocation, patchLocation } from "../utils/api";
@@ -12,7 +20,7 @@ function SingleLocationScreen({ route, navigation }) {
   if (!location_id) return navigation.navigate("HomeScreen");
   const [location, setLocation] = useState({});
   const [loading, setLoading] = useState(true);
-
+  const { setLocations } = useContext(LocationsContext);
   useEffect(() => {
     getSingleLocation(location_id)
       .then((data) => {
@@ -28,6 +36,7 @@ function SingleLocationScreen({ route, navigation }) {
   const handleFlagLocation = () => {
     patchLocation(location_id).then((data) => {
       setLocation(data);
+      setLocations([]);
     });
   };
 
@@ -70,10 +79,10 @@ function SingleLocationScreen({ route, navigation }) {
       <View style={styles.imageGrid}>
         {location.dangerous ? <Text>This Location is DANGEROUS</Text> : <></>}
         <FlatList
-          data={location.image_urls}
+          data={[...new Set(location.image_urls)]}
           horizontal
           showsHorizontalScrollIndicator={false}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(index) => index.toString()}
           snapToInterval={width}
           decelerationRate="fast"
           pagingEnabled
@@ -81,7 +90,9 @@ function SingleLocationScreen({ route, navigation }) {
             <View style={styles.imageItem}>
               <Image
                 style={styles.image}
-                source={{ uri: item }}
+                source={{
+                  uri: item ? item : "https://via.placeholder.com/160x160",
+                }}
                 resizeMode="stretch"
               />
             </View>

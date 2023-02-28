@@ -16,16 +16,6 @@ export const patchLocation = (location_id) => {
   });
 };
 
-export const getTopLocations = () => {
-  return DipAdvisorAPI.get("/locations").then(({ data: { locations } }) => {
-    const topSixLocations = locations
-      .sort((a, b) => a.votes - b.votes)
-      .slice(0, 7);
-
-    return topSixLocations;
-  });
-};
-
 export const addLocation = (body) => {
   return DipAdvisorAPI.post("/locations", body).then(({ data }) => {
     return data;
