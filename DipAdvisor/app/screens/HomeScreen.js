@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { UserContext } from "../contexts/UserContext";
-import { useContext } from "react";
-import { auth } from "../firebase";
-import { getTopLocations } from "../utils/api";
 import { Ionicons } from "@expo/vector-icons";
 import { Formik } from "formik";
+import React, { useContext, useEffect, useState } from "react";
+import { UserContext } from "../contexts/UserContext";
+import { auth } from "../firebase";
 import { styles } from "../styles/styles.HomeScreen";
+import { getTopLocations } from "../utils/api";
 
 import {
+  Image,
   Keyboard,
   Text,
-  Image,
   TextInput,
   TouchableOpacity,
   View,
@@ -40,7 +39,7 @@ const PopularSpotBox = ({ spot }) => {
   );
 };
 
-const HomeScreen = ({ navigation }, props) => {
+const HomeScreen = ({ navigation }) => {
   const userValue = useContext(UserContext);
   const [popularSpots, setPopularSpots] = useState([]);
   useEffect(() => {
@@ -50,9 +49,8 @@ const HomeScreen = ({ navigation }, props) => {
   }, []);
 
   const handleGetLocation = (values) => {
-    navigation.push("SingleLocationScreen", values);
+    navigation.navigate("SingleLocationScreen", values);
   };
-  console.log(userValue);
   return (
     <View style={styles.container}>
       <Formik initialValues={{ location_id: "" }} onSubmit={handleGetLocation}>
@@ -71,8 +69,7 @@ const HomeScreen = ({ navigation }, props) => {
             />
             <TouchableOpacity
               activeOpacity={1}
-              onPress={() => Keyboard.dismiss()}
-            >
+              onPress={() => Keyboard.dismiss()}>
               <Ionicons
                 style={styles.icon}
                 name="search"

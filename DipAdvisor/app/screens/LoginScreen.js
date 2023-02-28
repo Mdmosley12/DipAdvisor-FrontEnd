@@ -3,13 +3,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { Button, ImageBackground, Text, TextInput, View } from "react-native";
 import { CheckBox } from "react-native-elements";
 import * as Yup from "yup";
-import { UserContext } from "../contexts/UserContext";
 import { auth } from "../firebase";
 import { styles } from "../styles/styles.LoginScreen";
 import { marginTopChanger } from "../utils/marginTopChanger";
 
-function LoginScreen({ navigation }) {
-  const userValue = useContext(UserContext);
+function LoginScreen() {
   const [containerMarginTop, setContainerMarginTop] = useState(125);
 
   marginTopChanger(setContainerMarginTop);
@@ -25,7 +23,6 @@ function LoginScreen({ navigation }) {
         .signInWithEmailAndPassword(values.email, values.password)
         .then((userCredentials) => {
           const user = userCredentials.user;
-          userValue.setUser(user.displayName);
           console.log("Logged in with:", user.email);
         })
         .catch((error) => alert(error.message));
@@ -33,15 +30,6 @@ function LoginScreen({ navigation }) {
       alert("Please accept terms & conditions");
     }
   };
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        navigation.navigate("WelcomeScreen");
-      }
-    });
-    return unsubscribe;
-  }, []);
 
   return (
     <ImageBackground
