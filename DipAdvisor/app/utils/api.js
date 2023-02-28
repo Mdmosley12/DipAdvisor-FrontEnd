@@ -37,3 +37,11 @@ export const getAllLocations = () => {
     return locations;
   });
 };
+
+export const addPhotoToLocation = (body, location_id) => {
+  return DipAdvisorAPI.patch(`/photos/${location_id}`, body).then(
+    ({ data: { location } }) => {
+      return { location };
+    }
+  );
+};

@@ -32,6 +32,7 @@ export const uploadImage = async (image, setImageURL) => {
       getDownloadURL(snapshot.ref).then((url) => {
         setImageURL(url);
         console.log("File available at", url);
+        return url;
       });
     });
 };

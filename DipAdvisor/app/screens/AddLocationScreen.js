@@ -7,6 +7,7 @@ import {
   Button,
   ImageBackground,
   ScrollView,
+  Image,
 } from "react-native";
 import { Formik } from "formik";
 import { Switch } from "react-native";
@@ -35,10 +36,9 @@ function AddLocationScreen({ navigation }) {
   });
 
   const handlePost = (values) => {
-    uploadImage(image, setImageURL).then(() => {
+    uploadImage(image, setImageURL).then((url) => {
       values.created_by = auth.currentUser.email;
       values.image_urls = imageURL;
-
       addLocation(values).then(({ location }) => {
         const locationID = { location_id: location[0]._id };
         navigation.navigate("SingleLocationScreen", locationID);
