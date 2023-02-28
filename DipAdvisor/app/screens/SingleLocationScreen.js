@@ -73,15 +73,11 @@ function SingleLocationScreen({ route, navigation }) {
         values.image_urls = [imageUrl];
       })
       .then(() => {
-        setTimeout(() => {
-          console.log(values, "upload imge");
-        }, 2000);
+        setTimeout(() => {}, 2000);
       });
 
     const body = { url: imageUrl };
-    addPhotoToLocation(body, location_id).then((place) => {
-      console.log(place, "return of addphoto");
-    });
+    addPhotoToLocation(body, location_id).then((place) => {});
   };
 
   const renderLocationProperty = ({ item }) => {

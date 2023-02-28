@@ -28,7 +28,6 @@ export const getTopLocations = () => {
 
 export const addLocation = (body) => {
   return DipAdvisorAPI.post("/locations", body).then(({ data }) => {
-    console.log(data, "addlocation data");
     return data;
   });
 };
