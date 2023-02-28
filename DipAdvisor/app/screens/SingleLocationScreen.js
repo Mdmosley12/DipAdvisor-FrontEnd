@@ -8,10 +8,10 @@ import { getSingleLocation, patchLocation } from "../utils/api";
 import { checkAdmin } from "../utils/checkAdmin";
 
 function SingleLocationScreen({ route, navigation }) {
-  const { location_id } = route.params;
-  if (!location_id) return navigation.navigate("HomeScreen");
   const [location, setLocation] = useState({});
   const [loading, setLoading] = useState(true);
+  const { location_id } = route.params;
+  if (!location_id) return navigation.navigate("HomeScreen");
 
   useEffect(() => {
     getSingleLocation(location_id)
@@ -51,13 +51,15 @@ function SingleLocationScreen({ route, navigation }) {
       <View style={styles.topContainer}>
         <TouchableOpacity
           style={styles.closeButton}
-          onPress={() => navigation.navigate("HomeScreen")}>
+          onPress={() => navigation.navigate("HomeScreen")}
+        >
           <MaterialIcons name="close" size={24} color="black" />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.flagButton}
           onPress={handleFlagLocation}
-          disabled={location.dangerous ? checkAdmin(user) : false}>
+          disabled={location.dangerous ? checkAdmin(user) : false}
+        >
           <Image
             style={styles.flagIcon}
             source={require("../assets/RedFlag.png")}

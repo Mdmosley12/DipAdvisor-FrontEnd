@@ -1,46 +1,29 @@
 import { Formik } from "formik";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button, ImageBackground, Text, TextInput, View } from "react-native";
 import { CheckBox } from "react-native-elements";
-import * as Yup from "yup";
-import { auth } from "../firebase";
 import { styles } from "../styles/styles.LoginScreen";
 import { marginTopChanger } from "../utils/marginTopChanger";
+import { loginValidationSchema } from "../utils/loginValidationSchema";
+import { handleLogin } from "../utils/handleLogin";
 
 function LoginScreen() {
   const [containerMarginTop, setContainerMarginTop] = useState(125);
 
   marginTopChanger(setContainerMarginTop);
 
-  const validationSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email").required("Email is required"),
-    password: Yup.string().required("Password is required"),
-  });
-
-  const handleLogin = (values) => {
-    if (values.isChecked === true) {
-      auth
-        .signInWithEmailAndPassword(values.email, values.password)
-        .then((userCredentials) => {
-          const user = userCredentials.user;
-          console.log("Logged in with:", user.email);
-        })
-        .catch((error) => alert(error.message));
-    } else {
-      alert("Please accept terms & conditions");
-    }
-  };
-
   return (
     <ImageBackground
       source={require("../assets/WelcomeScreenImg.jpg")}
-      style={styles.background}>
+      style={styles.background}
+    >
       <Formik
-        validationSchema={validationSchema}
+        validationSchema={loginValidationSchema}
         initialValues={{ email: "", password: "", isChecked: false }}
         onSubmit={(values) => {
           handleLogin(values);
-        }}>
+        }}
+      >
         {({
           handleChange,
           handleBlur,
@@ -51,7 +34,8 @@ function LoginScreen() {
           touched,
         }) => (
           <View
-            style={{ ...styles.loginContainer, marginTop: containerMarginTop }}>
+            style={{ ...styles.loginContainer, marginTop: containerMarginTop }}
+          >
             <Text style={styles.label}>Email:</Text>
             <TextInput
               style={styles.emailInput}

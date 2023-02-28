@@ -1,13 +1,5 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  Image,
-  TouchableOpacity,
-} from "react-native";
-
-import MapView, { Marker, Callout } from "react-native-maps";
+import { Text, SafeAreaView } from "react-native";
+import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { useState, useEffect } from "react";
 import { getAllLocations } from "../utils/api";

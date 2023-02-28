@@ -1,10 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Formik } from "formik";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { auth } from "../firebase";
 import { styles } from "../styles/styles.HomeScreen";
 import { getTopLocations } from "../utils/api";
-
 import {
   Image,
   Keyboard,
@@ -21,13 +20,7 @@ const PopularSpotsBox = ({ popularSpots, navigation }) => {
       <View>
         <Text style={styles.spotsTitle}>Most popular spots:</Text>
       </View>
-      <View
-        style={{
-          flexWrap: "wrap",
-          flex: 1,
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}>
+      <View style={styles.popularSpotsContainer}>
         {popularSpots.map((spot) => {
           return (
             <PopularSpotBox
@@ -74,6 +67,7 @@ const HomeScreen = ({ navigation }) => {
   const handleGetLocation = (values) => {
     navigation.navigate("SingleLocationScreen", values);
   };
+
   return (
     <View style={styles.container}>
       <Formik initialValues={{ location_id: "" }} onSubmit={handleGetLocation}>
@@ -92,7 +86,8 @@ const HomeScreen = ({ navigation }) => {
             />
             <TouchableOpacity
               activeOpacity={1}
-              onPress={() => Keyboard.dismiss()}>
+              onPress={() => Keyboard.dismiss()}
+            >
               <Ionicons
                 style={styles.icon}
                 name="search"
