@@ -41,6 +41,7 @@ function SignUpScreen({ navigation }) {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         navigation.navigate("WelcomeScreen");
+        auth.currentUser.reload();
       }
     });
     return unsubscribe;
@@ -49,7 +50,8 @@ function SignUpScreen({ navigation }) {
   return (
     <ImageBackground
       style={styles.background}
-      source={require("../assets/WelcomeScreenImg.jpg")}>
+      source={require("../assets/WelcomeScreenImg.jpg")}
+    >
       <Formik
         validationSchema={validationSchema}
         initialValues={{
@@ -60,7 +62,8 @@ function SignUpScreen({ navigation }) {
         }}
         onSubmit={(values) => {
           handleSignUp(values);
-        }}>
+        }}
+      >
         {({
           handleChange,
           handleBlur,
