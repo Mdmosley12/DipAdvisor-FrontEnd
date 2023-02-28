@@ -144,18 +144,17 @@ function AddLocationScreen({ navigation }) {
                     {errors.description}
                   </Text>
                 ) : null}
-
-                <Text style={styles.label}>
-                  <Button
-                    title="Select photo"
-                    onPress={() => pickImage(setImage)}
+                <Button
+                  title="Select photo"
+                  onPress={() => pickImage(setImage)}
+                />
+                {image && (
+                  <Image
+                    source={{ uri: image }}
+                    style={{ width: 200, height: 200 }}
                   />
-                  {image && (
-                    <Image
-                      source={{ uri: image }}
-                      style={{ width: 200, height: 200 }}
-                    />
-                  )}
+                )}
+                <Text style={styles.label}>
                   Is this location on public land?
                 </Text>
 

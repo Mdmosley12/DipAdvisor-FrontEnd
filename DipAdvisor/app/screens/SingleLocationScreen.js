@@ -1,8 +1,8 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
-import { auth } from "../firebase";
 import Loading from "../components/Loading";
+import { auth } from "../firebase";
 import { styles, width } from "../styles/styles.SingleLocationScreen";
 import { getSingleLocation, patchLocation } from "../utils/api";
 import { checkAdmin } from "../utils/checkAdmin";
@@ -70,6 +70,7 @@ function SingleLocationScreen({ route, navigation }) {
         </TouchableOpacity>
       </View>
       <View style={styles.imageGrid}>
+        {location.dangerous ? <Text>This Location is DANGEROUS</Text> : <></>}
         <FlatList
           data={location.image_urls}
           horizontal
