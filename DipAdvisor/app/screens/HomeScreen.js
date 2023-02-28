@@ -1,78 +1,113 @@
+import { MaterialIcons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
-import { UserContext } from "../contexts/UserContext";
-import { useContext } from "react";
+import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import Loading from "../components/Loading";
 import { auth } from "../firebase";
-import { getTopLocations } from "../utils/api";
-import { styles } from "../styles/styles.HomeScreen";
-import { Text, Image, TouchableOpacity, View } from "react-native";
-import { ScrollView } from "react-native";
+import { styles, width } from "../styles/styles.SingleLocationScreen";
+import { getSingleLocation, patchLocation } from "../utils/api";
+import { checkAdmin } from "../utils/checkAdmin";
 
-const PopularSpotsBox = ({ popularSpots, navigation }) => {
-  return (
-    <ScrollView>
-      <View>
-        <Text style={styles.spotsTitle}>Most popular spots:</Text>
-      </View>
-      <View
-        style={{
-          flexWrap: "wrap",
-          flex: 1,
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}
-      >
-        {popularSpots.map((spot) => {
-          return (
-            <PopularSpotBox
-              spot={spot}
-              key={spot._id}
-              navigation={navigation}
-            />
-          );
-        })}
-      </View>
-    </ScrollView>
-  );
-};
-
-const PopularSpotBox = ({ spot, navigation }) => {
-  const goToLocation = (locationID) => {
-    const spotToShow = { location_id: locationID };
-    navigation.push("SingleLocationScreen", spotToShow);
-  };
-
-  return (
-    <View style={{ padding: 10 }}>
-      <TouchableOpacity onPress={() => goToLocation(spot._id)} title="go">
-        <Text style={styles.boxTitle}>{spot.location_name}</Text>
-        <Image
-          style={{ width: 160, height: 160 }}
-          source={{ uri: spot.image_urls[0] }}
-        />
-        <Text style={styles.votes}>{spot.votes} votes</Text>
-      </TouchableOpacity>
-    </View>
-  );
-};
-const HomeScreen = ({ navigation }) => {
-  const [popularSpots, setPopularSpots] = useState([]);
+function SingleLocationScreen({ route, navigation }) {
+  const { location_id } = route.params;
+  if (!location_id) return navigation.navigate("HomeScreen");
+  const [location, setLocation] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getTopLocations().then((data) => {
-      setPopularSpots(data);
+    getSingleLocation(location_id)
+      .then((data) => {
+        setLocation(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        alert(error.message);
+        navigation.navigate("HomeScreen");
+      });
+  }, [location_id]);
+
+  const handleFlagLocation = () => {
+    patchLocation(location_id).then((data) => {
+      setLocation(data);
     });
-  }, []);
+  };
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  const renderLocationProperty = ({ item }) => {
+    return (
+      <View style={styles.propertyItem}>
+        <Text style={styles.propertyName}>{item.name}</Text>
+        <Text style={styles.propertyValue}>{item.value}</Text>
+      </View>
+    );
+  };
+
+  const user = auth.currentUser;
 
   return (
     <View style={styles.container}>
-      <View style={styles.backgroundWelcome}>
-        <Text style={styles.heading}>
-          Where's today's dip {auth.currentUser.displayName}?
-        </Text>
-        <PopularSpotsBox popularSpots={popularSpots} navigation={navigation} />
+      <View style={styles.topContainer}>
+        <TouchableOpacity
+          style={styles.closeButton}
+          onPress={() => navigation.navigate("HomeScreen")}>
+          <MaterialIcons name="close" size={24} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.flagButton}
+          onPress={handleFlagLocation}
+          disabled={location.dangerous ? checkAdmin(user) : false}>
+          <Image
+            style={styles.flagIcon}
+            source={require("../assets/RedFlag.png")}
+          />
+          <Text style={styles.flagButtonText}>
+            {location.dangerous ? "Flagged as Dangerous" : "Flag as Dangerous"}
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.imageGrid}>
+        {location.dangerous ? <Text>This Location is DANGEROUS</Text> : <></>}
+        <FlatList
+          data={location.image_urls}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={(item, index) => index.toString()}
+          snapToInterval={width}
+          decelerationRate="fast"
+          pagingEnabled
+          renderItem={({ item }) => (
+            <View style={styles.imageItem}>
+              <Image
+                style={styles.image}
+                source={{ uri: item }}
+                resizeMode="stretch"
+              />
+            </View>
+          )}
+        />
+      </View>
+      <View style={styles.info}>
+        <Text style={styles.title}>{location.location_name}</Text>
+        <Text style={styles.description}>{location.description}</Text>
+        <View style={styles.propertiesList}>
+          <FlatList
+            data={[
+              { name: "Depth", value: location.depth ? location.depth : "N/A" },
+              { name: "Public", value: location.public ? "Yes" : "No" },
+              {
+                name: "Water Temperature",
+                value: location.water_temp ? location.water_temp : "N/A",
+              },
+            ]}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={renderLocationProperty}
+          />
+        </View>
       </View>
     </View>
   );
-};
+}
 
-export default HomeScreen;
+export default SingleLocationScreen;
