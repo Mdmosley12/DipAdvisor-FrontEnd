@@ -23,9 +23,7 @@ import * as ImagePicker from "expo-image-picker";
 import { uploadImage } from "../utils/imageUploads";
 
 function SingleLocationScreen({ route, navigation }) {
-  const [image, setImage] = useState(
-    "https://firebasestorage.googleapis.com/v0/b/dipadvisor.appspot.com/o/20d20b29-88a9-414f-9b53-827a735014f6?alt=media&token=932d12b4-e9bf-40cd-92d6-48a84fd92f24"
-  );
+  const [image, setImage] = useState("");
   const [imageUrl, setImageUrl] = useState("");
 
   const { location_id } = route.params;
