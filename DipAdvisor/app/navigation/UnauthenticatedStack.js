@@ -17,7 +17,7 @@ const UnauthenticatedStack = () => {
         screenOptions={({ route }) => ({
           tabBarItemStyle: {
             display:
-              route.name === "LoginScreen" || route.name === "SignupScreen"
+              route.name === "LoginScreen" || route.name === "SignUpScreen"
                 ? "none"
                 : "flex",
           },
@@ -48,7 +48,7 @@ const UnauthenticatedStack = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="SignupScreen"
+          name="SignUpScreen"
           component={SignUpScreen}
           options={{ headerShown: false }}
         />
