@@ -11,6 +11,7 @@ const AuthenticatedStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
+        initialRouteName="HomeScreen"
         screenOptions={({ route }) => ({
           tabBarItemStyle: {
             display: route.name === "SingleLocationScreen" ? "none" : "flex",
