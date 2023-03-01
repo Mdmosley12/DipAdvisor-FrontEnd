@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   ImageBackground,
   View,
@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { styles } from "../styles/styles.WelcomeScreen";
-import { auth } from "../firebase";
 
 function WelcomeScreen({ navigation }) {
   return (
@@ -20,7 +19,10 @@ function WelcomeScreen({ navigation }) {
           style={styles.logo}
           source={require("../assets/React-icon.png")}
         />
-        <Text style={styles.companyName}>DipAdvisor</Text>
+        <Text style={styles.companyName}>
+          <Text style={styles.dip}>Dip</Text>
+          Advisor
+        </Text>
       </View>
       <TouchableOpacity
         style={styles.loginButton}

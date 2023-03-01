@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   loginContainer: {
     borderRadius: 8,
     width: "80%",
-    height: 450,
+    height: "auto",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 20,
     marginTop: 125,
+    backgroundColor: "rgba(250, 250, 250, 0.8)",
   },
   label: {
     alignSelf: "flex-start",

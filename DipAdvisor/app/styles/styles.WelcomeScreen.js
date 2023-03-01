@@ -13,6 +13,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 30,
+    borderColor: "white",
+    borderStyle: "solid",
+    borderWidth: 1,
   },
   registerButton: {
     width: "80%",
@@ -22,6 +25,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 30,
     marginBottom: 150,
+    borderColor: "white",
+    borderStyle: "solid",
+    borderWidth: 1,
+    marginTop: 5,
   },
   logo: {
     width: 150,
@@ -34,9 +41,12 @@ const styles = StyleSheet.create({
     top: 70,
   },
   companyName: {
-    fontSize: 32,
+    fontSize: 40,
     fontWeight: "bold",
-    marginTop: 10,
+    marginTop: 15,
+  },
+  dip: {
+    color: "#1A35FA",
   },
   loginText: {
     fontSize: 20,

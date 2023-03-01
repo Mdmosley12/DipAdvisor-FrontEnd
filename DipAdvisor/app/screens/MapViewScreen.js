@@ -1,25 +1,19 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  Image,
-  TouchableOpacity,
-} from "react-native";
-
-import MapView, { Marker, Callout } from "react-native-maps";
 import * as Location from "expo-location";
-import { useState, useEffect } from "react";
-import { getAllLocations } from "../utils/api";
+import { useContext, useEffect, useState } from "react";
+import { SafeAreaView, Text } from "react-native";
+import MapView, { Callout, Marker } from "react-native-maps";
 import Loading from "../components/Loading";
+import { LocationsContext } from "../contexts/LocationsContext";
+import { auth } from "../firebase";
 import styles from "../styles/styles.MapViewScreen";
 
 function MapViewScreen({ navigation }) {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [mapMarkers, setMapMarkers] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [selectedMarker, setSelectedMarker] = useState(null);
+  const { locations, updatedView } = useContext(LocationsContext);
 
   // gets user location at start, asks for permission if not already granted
   useEffect(() => {
@@ -36,38 +30,35 @@ function MapViewScreen({ navigation }) {
   }, []);
 
   useEffect(() => {
-    setLoading(true);
-    getAllLocations()
-      .then((data) => {
-        const allCoordinates = data.map((location) => {
-          return {
-            id: location._id,
-            location_name: location.location_name,
-            coordinate: {
-              latitude: location.coordinates[0],
-              longitude: location.coordinates[1],
-            },
-            images: location.image_urls[0],
-          };
-        });
-        setMapMarkers(allCoordinates);
-        setLoading(false);
-      })
-      .catch((error) => {
-        alert(error.message);
-        navigation.navigate("HomeScreen");
-      });
-  }, []);
+    updatedView();
+    const allCoordinates = locations.map((location) => {
+      return {
+        id: location._id,
+        location_name: location.location_name,
+        coordinate: {
+          latitude: location.coordinates[0] || undefined,
+          longitude: location.coordinates[1] || undefined,
+        },
+        images: location.image_urls[0],
+        dangerous: location.dangerous,
+      };
+    });
+    setMapMarkers(allCoordinates);
+    setLoading(false);
+  }, [locations, updatedView]);
 
   const handleMarkerPress = (markerid) => {
     setSelectedMarker(markerid);
   };
 
   const markerClick = () => {
-    navigation.navigate("Home", {
-      screen: "SingleLocationScreen",
-      params: { location_id: selectedMarker },
-    });
+    if (auth.currentUser) {
+      navigation.navigate("SingleLocationScreen", {
+        location_id: selectedMarker,
+      });
+    } else {
+      alert("Login to View a Singular Location");
+    }
   };
 
   if (loading) {
@@ -86,21 +77,27 @@ function MapViewScreen({ navigation }) {
             longitudeDelta: 0.0421,
           }}
           showsUserLocation={true}
+          showsMyLocationButton={false}
           showsScale={true}
           zoomEnabled={true}
+          loadingEnabled={true}
           onCalloutPress={markerClick}
         >
           {mapMarkers.map((marker, index) => {
-            return (
-              <Marker
-                key={index}
-                coordinate={marker.coordinate}
-                title={marker.location_name}
-                onPress={() => handleMarkerPress(marker.id)}
-              >
-                {/* //////////////callout section a work in progress
+            if (
+              (marker.coordinate.latitude !== undefined && !marker.dangerous) ||
+              (marker.coordinate.longitude !== undefined && !marker.dangerous)
+            ) {
+              return (
+                <Marker
+                  key={index}
+                  coordinate={marker.coordinate}
+                  title={marker.location_name}
+                  onPress={() => handleMarkerPress(marker.id)}
+                >
+                  {/* //////////////callout section a work in progress
                    Free versions are too slow to render images within map, can uncomment this if upgrade */}
-                {/* {selectedMarker === marker && (
+                  {/* {selectedMarker === marker && (
                   <Callout>
                     <View style={styles.calloutContainer}>
                     
@@ -115,8 +112,9 @@ function MapViewScreen({ navigation }) {
                   </Callout> 
                   
                 )}//// */}
-              </Marker>
-            );
+                </Marker>
+              );
+            }
           })}
         </MapView>
       )}

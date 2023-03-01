@@ -1,33 +1,21 @@
-import { Ionicons } from "@expo/vector-icons";
-import { Formik } from "formik";
 import React, { useContext, useEffect, useState } from "react";
 import { auth } from "../firebase";
 import { styles } from "../styles/styles.HomeScreen";
-import { getTopLocations } from "../utils/api";
 
 import {
   Image,
-  Keyboard,
   ScrollView,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
+  ImageBackground,
 } from "react-native";
+import { LocationsContext } from "../contexts/LocationsContext";
 
 const PopularSpotsBox = ({ popularSpots, navigation }) => {
   return (
     <ScrollView>
-      <View>
-        <Text style={styles.spotsTitle}>Most popular spots:</Text>
-      </View>
-      <View
-        style={{
-          flexWrap: "wrap",
-          flex: 1,
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}>
+      <View style={styles.popularSpotsContainer}>
         {popularSpots.map((spot) => {
           return (
             <PopularSpotBox
@@ -47,14 +35,18 @@ const PopularSpotBox = ({ spot, navigation }) => {
     const spotToShow = { location_id: locationID };
     navigation.navigate("SingleLocationScreen", spotToShow);
   };
-
   return (
     <View style={{ padding: 10 }}>
       <TouchableOpacity onPress={() => goToLocation(spot._id)} title="go">
         <Text style={styles.boxTitle}>{spot.location_name}</Text>
         <Image
-          style={{ width: 160, height: 160 }}
-          source={{ uri: spot.image_urls[0] }}
+          style={{ width: 160, height: 160, borderRadius: 20 }}
+          source={{
+            uri:
+              spot.image_urls.length >= 1 && spot.image_urls[0].length > 0
+                ? spot.image_urls[0]
+                : "https://via.placeholder.com/160x160",
+          }}
         />
         <Text style={styles.votes}>{spot.votes} votes</Text>
       </TouchableOpacity>
@@ -64,52 +56,26 @@ const PopularSpotBox = ({ spot, navigation }) => {
 
 const HomeScreen = ({ navigation }) => {
   const [popularSpots, setPopularSpots] = useState([]);
-
+  const { locations } = useContext(LocationsContext);
   useEffect(() => {
-    getTopLocations().then((data) => {
-      setPopularSpots(data);
-    });
+    setPopularSpots(locations.sort((a, b) => a.votes - b.votes).slice(0, 7));
   }, []);
 
-  const handleGetLocation = (values) => {
-    navigation.navigate("SingleLocationScreen", values);
-  };
   return (
-    <View style={styles.container}>
-      <Formik initialValues={{ location_id: "" }} onSubmit={handleGetLocation}>
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
-          <View style={styles.searchContainer}>
-            <TextInput
-              style={styles.input}
-              onChangeText={handleChange("location_id")}
-              onBlur={handleBlur("location_id")}
-              value={values.location_id}
-              placeholder="Search (Location ID)"
-              placeholderTextColor="#9B9B9B"
-              keyboardType="numeric"
-              returnKeyType="send"
-              onSubmitEditing={handleSubmit}
-            />
-            <TouchableOpacity
-              activeOpacity={1}
-              onPress={() => Keyboard.dismiss()}>
-              <Ionicons
-                style={styles.icon}
-                name="search"
-                size={24}
-                color="#000000"
-              />
-            </TouchableOpacity>
-          </View>
-        )}
-      </Formik>
+    <ImageBackground
+      style={styles.background}
+      source={require("../assets/WelcomeScreenImg.jpg")}
+    >
+      {/* <View style={styles.container}> */}
       <View style={styles.backgroundWelcome}>
         <Text style={styles.heading}>
           Where's today's dip {auth.currentUser.displayName}?
         </Text>
+        <Text style={styles.spotsTitle}>Most popular spots:</Text>
         <PopularSpotsBox popularSpots={popularSpots} navigation={navigation} />
       </View>
-    </View>
+      {/* </View> */}
+    </ImageBackground>
   );
 };
 

@@ -1,6 +1,6 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Button,
   FlatList,
@@ -11,6 +11,7 @@ import {
   View,
 } from "react-native";
 import Loading from "../components/Loading";
+import { LocationsContext } from "../contexts/LocationsContext";
 import { auth } from "../firebase";
 import { styles, width } from "../styles/styles.SingleLocationScreen";
 import {
@@ -22,14 +23,14 @@ import { checkAdmin } from "../utils/checkAdmin";
 import { uploadImage } from "../utils/imageUploads";
 
 function SingleLocationScreen({ route, navigation }) {
+  const [location, setLocation] = useState({});
+  const [loading, setLoading] = useState(true);
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const [visible, setVisible] = useState(false);
 
   const { location_id } = route.params;
   if (!location_id) return navigation.navigate("HomeScreen");
-  const [location, setLocation] = useState({});
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getSingleLocation(location_id)
@@ -92,13 +93,15 @@ function SingleLocationScreen({ route, navigation }) {
       <View style={styles.topContainer}>
         <TouchableOpacity
           style={styles.closeButton}
-          onPress={() => navigation.navigate("HomeScreen")}>
+          onPress={() => navigation.navigate("HomeScreen")}
+        >
           <MaterialIcons name="close" size={24} color="black" />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.flagButton}
           onPress={handleFlagLocation}
-          disabled={location.dangerous ? checkAdmin(user) : false}>
+          disabled={location.dangerous ? checkAdmin(user) : false}
+        >
           <Image
             style={styles.flagIcon}
             source={require("../assets/RedFlag.png")}
@@ -111,10 +114,10 @@ function SingleLocationScreen({ route, navigation }) {
       <View style={styles.imageGrid}>
         {location.dangerous ? <Text>This Location is DANGEROUS</Text> : <></>}
         <FlatList
-          data={location.image_urls}
+          data={[...new Set(location.image_urls)]}
           horizontal
           showsHorizontalScrollIndicator={false}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(index) => index.toString()}
           snapToInterval={width}
           decelerationRate="fast"
           pagingEnabled
@@ -122,7 +125,9 @@ function SingleLocationScreen({ route, navigation }) {
             <View style={styles.imageItem}>
               <Image
                 style={styles.image}
-                source={{ uri: item }}
+                source={{
+                  uri: item ? item : "https://via.placeholder.com/160x160",
+                }}
                 resizeMode="stretch"
               />
             </View>
@@ -154,7 +159,8 @@ function SingleLocationScreen({ route, navigation }) {
           {!visible ? (
             <TouchableOpacity
               style={styles.photoButton}
-              onPress={() => pickImage(setImage)}>
+              onPress={() => pickImage(setImage)}
+            >
               <Text>Add Photo</Text>
             </TouchableOpacity>
           ) : null}
@@ -173,7 +179,8 @@ function SingleLocationScreen({ route, navigation }) {
                 style={styles.photoButton}
                 onPress={() => {
                   handleUploadImage();
-                }}>
+                }}
+              >
                 <Text>Upload Photo</Text>
               </TouchableOpacity>
             </View>
@@ -181,7 +188,8 @@ function SingleLocationScreen({ route, navigation }) {
           {visible ? (
             <TouchableOpacity
               style={styles.photoButton}
-              onPress={() => handleAddPhotoToLocation()}>
+              onPress={() => handleAddPhotoToLocation()}
+            >
               <Text>Post Photo</Text>
             </TouchableOpacity>
           ) : null}

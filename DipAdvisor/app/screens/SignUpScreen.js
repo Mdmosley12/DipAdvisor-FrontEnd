@@ -1,46 +1,29 @@
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
-import { Button, ImageBackground, Text, TextInput, View } from "react-native";
+import {
+  Button,
+  ImageBackground,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { CheckBox } from "react-native-elements";
-import * as Yup from "yup";
 import { auth } from "../firebase";
 import { styles } from "../styles/styles.SignUpScreen";
 import { marginTopChanger } from "../utils/marginTopChanger";
+import { signUpValidationSchema } from "../utils/signUpValidationSchema";
+import { handleSignUp } from "../utils/handleSignUp";
 
 function SignUpScreen({ navigation }) {
   const [containerMarginTop, setContainerMarginTop] = useState(125);
   marginTopChanger(setContainerMarginTop);
-  const validationSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email").required("Email is required"),
-    displayName: Yup.string()
-      .min(2, "Too short!")
-      .max(15, "Too Long!")
-      .required("Required"),
-    password: Yup.string().required("Password is required"),
-  });
-
-  const handleSignUp = (values) => {
-    if (values.isChecked === true) {
-      auth
-        .createUserWithEmailAndPassword(values.email, values.password)
-        .then((userCredentials) => {
-          const user = userCredentials.user;
-          console.log("Signed up with:", user.email);
-          user.updateProfile({
-            displayName: values.displayName,
-            displayName: values.displayName,
-          });
-        })
-        .catch((error) => alert(error.message));
-    } else {
-      alert("Please accept terms & conditions");
-    }
-  };
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         navigation.navigate("WelcomeScreen");
+        auth.currentUser.reload();
       }
     });
     return unsubscribe;
@@ -49,9 +32,10 @@ function SignUpScreen({ navigation }) {
   return (
     <ImageBackground
       style={styles.background}
-      source={require("../assets/WelcomeScreenImg.jpg")}>
+      source={require("../assets/WelcomeScreenImg.jpg")}
+    >
       <Formik
-        validationSchema={validationSchema}
+        validationSchema={signUpValidationSchema}
         initialValues={{
           email: "",
           displayName: "",
@@ -60,7 +44,8 @@ function SignUpScreen({ navigation }) {
         }}
         onSubmit={(values) => {
           handleSignUp(values);
-        }}>
+        }}
+      >
         {({
           handleChange,
           handleBlur,
@@ -70,7 +55,12 @@ function SignUpScreen({ navigation }) {
           errors,
           touched,
         }) => (
-          <View style={{ ...styles.container, marginTop: containerMarginTop }}>
+          <View
+            style={{
+              ...styles.loginContainer,
+              marginTop: containerMarginTop,
+            }}
+          >
             <Text style={styles.label}>Email:</Text>
             <TextInput
               style={styles.emailInput}
@@ -81,6 +71,7 @@ function SignUpScreen({ navigation }) {
             {errors.email && touched.email ? (
               <Text style={styles.emailError}>{errors.email}</Text>
             ) : null}
+
             <Text style={styles.label}>Display Name:</Text>
             <TextInput
               style={styles.displayNameInput}
@@ -91,6 +82,7 @@ function SignUpScreen({ navigation }) {
             {errors.displayName && touched.displayName ? (
               <Text style={styles.displayNameError}>{errors.displayName}</Text>
             ) : null}
+
             <Text style={styles.label}>Password:</Text>
             <TextInput
               style={styles.passwordInput}
@@ -102,6 +94,7 @@ function SignUpScreen({ navigation }) {
             {errors.password && touched.password ? (
               <Text style={styles.passwordError}>{errors.password}</Text>
             ) : null}
+
             <Text style={styles.disclaimer}>
               By using this App, the user agrees to indemnify and hold harmless
               the App and its developers, affiliates, and partners from any
@@ -114,6 +107,7 @@ function SignUpScreen({ navigation }) {
               checked={values.isChecked}
               onPress={() => setFieldValue("isChecked", !values.isChecked)}
             />
+
             <Button
               style={styles.button}
               onPress={handleSubmit}
