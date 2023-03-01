@@ -24,6 +24,7 @@ function MapViewScreen({ navigation }) {
 
       let location = await Location.getCurrentPositionAsync({});
       setUserLocation(location);
+      // console.log(location, "maps");
     })();
   }, []);
 
@@ -56,10 +57,11 @@ function MapViewScreen({ navigation }) {
   };
 
   const markerClick = () => {
-    navigation.navigate("Home", {
-      screen: "SingleLocationScreen",
-      params: { location_id: selectedMarker },
-    });
+    navigation.navigate(
+      "SingleLocationScreen",
+
+      { location_id: selectedMarker }
+    );
   };
 
   if (loading) {
@@ -80,6 +82,7 @@ function MapViewScreen({ navigation }) {
           showsUserLocation={true}
           showsScale={true}
           zoomEnabled={true}
+          loadingEnabled={true}
           onCalloutPress={markerClick}
         >
           {mapMarkers.map((marker, index) => {
