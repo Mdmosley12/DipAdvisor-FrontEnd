@@ -41,7 +41,7 @@ function SingleLocationScreen({ route, navigation }) {
         alert(error.message);
         navigation.navigate("HomeScreen");
       });
-  }, [location_id, imageUrl]);
+  }, [location_id]);
 
   const pickImage = async (setImage) => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -66,18 +66,10 @@ function SingleLocationScreen({ route, navigation }) {
     return <Loading />;
   }
 
-  const addPhoto = (image, setImageUrl, imageUrl) => {
-    const values = {};
-    uploadImage(image, setImageUrl)
-      .then((url) => {
-        values.image_urls = [imageUrl];
-      })
-      .then(() => {
-        setTimeout(() => {}, 2000);
-      });
-
+  const handleAddPhotoToLocation = () => {
     const body = { url: imageUrl };
-    addPhotoToLocation(body, location_id).then((place) => {});
+    console.log(body);
+    addPhotoToLocation(body, location_id);
   };
 
   const renderLocationProperty = ({ item }) => {
@@ -159,10 +151,14 @@ function SingleLocationScreen({ route, navigation }) {
             <View>
               <Image source={{ uri: image }} style={{ width: 12, height: 9 }} />
               <Button
-                title="addPhoto function"
+                title="upload image"
                 onPress={() => {
-                  addPhoto(image, setImageUrl, imageUrl);
+                  uploadImage(image, setImageUrl);
                 }}
+              />
+              <Button
+                title="add image to location"
+                onPress={() => handleAddPhotoToLocation()}
               />
             </View>
           )}

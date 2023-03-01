@@ -23,6 +23,7 @@ import * as ImagePicker from "expo-image-picker";
 function AddLocationScreen({ navigation }) {
   const [image, setImage] = useState(null);
   const [imageURL, setImageURL] = useState("");
+  const [visible, setVisible] = useState(false);
 
   const validationSchema = Yup.object().shape({
     location_name: Yup.string()
@@ -36,17 +37,9 @@ function AddLocationScreen({ navigation }) {
   });
 
   const handlePost = (values) => {
-    uploadImage(image, setImageURL)
-      .then((url) => {
-        values.created_by = auth.currentUser.email;
-        values.image_urls = [imageURL];
-        values.coordinates = [54.449505, -3.284804];
-      })
-      .then(() => {
-        setTimeout(() => {
-          console.log(values, "values");
-        });
-      }, 2000);
+    values.created_by = auth.currentUser.email;
+    values.coordinates = [54.449505, -3.284804];
+    values.image_urls = [imageURL];
 
     addLocation(values)
       .then(({ location }) => {
@@ -56,6 +49,7 @@ function AddLocationScreen({ navigation }) {
       .catch((err) => {
         console.log(err);
       });
+    console.log(values);
   };
   const pickImage = async (setImage) => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -68,6 +62,12 @@ function AddLocationScreen({ navigation }) {
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
+  };
+
+  const uploadImageHandler = () => {
+    uploadImage(image, setImageURL);
+    setVisible(true);
+    console.log(visible);
   };
   return (
     <ImageBackground
@@ -125,10 +125,16 @@ function AddLocationScreen({ navigation }) {
                   onPress={() => pickImage(setImage)}
                 />
                 {image && (
-                  <Image
-                    source={{ uri: image }}
-                    style={{ width: 200, height: 200 }}
-                  />
+                  <View>
+                    <Image
+                      source={{ uri: image }}
+                      style={{ width: 200, height: 200 }}
+                    />
+                    <Button
+                      title="upload image"
+                      onPress={() => uploadImageHandler}
+                    ></Button>
+                  </View>
                 )}
                 <Text style={styles.label}>
                   Is this location on public land?
