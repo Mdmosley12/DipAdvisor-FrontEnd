@@ -11,7 +11,6 @@ import { checkAdmin } from "../utils/checkAdmin";
 function SingleLocationScreen({ route, navigation }) {
   const [location, setLocation] = useState({});
   const [loading, setLoading] = useState(true);
-  const { setLocations } = useContext(LocationsContext);
   const { location_id } = route.params;
   if (!location_id) return navigation.navigate("HomeScreen");
 
@@ -30,7 +29,6 @@ function SingleLocationScreen({ route, navigation }) {
   const handleFlagLocation = () => {
     patchLocation(location_id).then((data) => {
       setLocation(data);
-      setLocations([]);
     });
   };
 
