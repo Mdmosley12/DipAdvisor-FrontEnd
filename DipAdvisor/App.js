@@ -1,5 +1,10 @@
+import { LocationsProvider } from "./app/contexts/LocationsContext";
 import Navigation from "./app/navigation";
 
 export default function App() {
-  return <Navigation />;
+  return (
+    <LocationsProvider>
+      <Navigation />
+    </LocationsProvider>
+  );
 }

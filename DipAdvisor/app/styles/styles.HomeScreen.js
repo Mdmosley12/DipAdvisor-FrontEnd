@@ -32,8 +32,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   boxTitle: {
-    fontSize: 18,
-    textAlign: "right",
+    fontSize: 16,
+    textAlign: "center",
   },
   backgroundWelcome: {
     flex: 1,

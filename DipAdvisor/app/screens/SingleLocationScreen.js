@@ -1,7 +1,8 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import Loading from "../components/Loading";
+import { LocationsContext } from "../contexts/LocationsContext";
 import { auth } from "../firebase";
 import { styles, width } from "../styles/styles.SingleLocationScreen";
 import { getSingleLocation, patchLocation } from "../utils/api";
@@ -10,6 +11,7 @@ import { checkAdmin } from "../utils/checkAdmin";
 function SingleLocationScreen({ route, navigation }) {
   const [location, setLocation] = useState({});
   const [loading, setLoading] = useState(true);
+  const { setLocations } = useContext(LocationsContext);
   const { location_id } = route.params;
   if (!location_id) return navigation.navigate("HomeScreen");
 
@@ -28,6 +30,7 @@ function SingleLocationScreen({ route, navigation }) {
   const handleFlagLocation = () => {
     patchLocation(location_id).then((data) => {
       setLocation(data);
+      setLocations([]);
     });
   };
 
@@ -51,15 +54,13 @@ function SingleLocationScreen({ route, navigation }) {
       <View style={styles.topContainer}>
         <TouchableOpacity
           style={styles.closeButton}
-          onPress={() => navigation.navigate("HomeScreen")}
-        >
+          onPress={() => navigation.navigate("HomeScreen")}>
           <MaterialIcons name="close" size={24} color="black" />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.flagButton}
           onPress={handleFlagLocation}
-          disabled={location.dangerous ? checkAdmin(user) : false}
-        >
+          disabled={location.dangerous ? checkAdmin(user) : false}>
           <Image
             style={styles.flagIcon}
             source={require("../assets/RedFlag.png")}
@@ -72,10 +73,10 @@ function SingleLocationScreen({ route, navigation }) {
       <View style={styles.imageGrid}>
         {location.dangerous ? <Text>This Location is DANGEROUS</Text> : <></>}
         <FlatList
-          data={location.image_urls}
+          data={[...new Set(location.image_urls)]}
           horizontal
           showsHorizontalScrollIndicator={false}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(index) => index.toString()}
           snapToInterval={width}
           decelerationRate="fast"
           pagingEnabled
@@ -83,7 +84,9 @@ function SingleLocationScreen({ route, navigation }) {
             <View style={styles.imageItem}>
               <Image
                 style={styles.image}
-                source={{ uri: item }}
+                source={{
+                  uri: item ? item : "https://via.placeholder.com/160x160",
+                }}
                 resizeMode="stretch"
               />
             </View>
