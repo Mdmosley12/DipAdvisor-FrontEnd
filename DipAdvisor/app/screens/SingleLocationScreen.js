@@ -1,25 +1,24 @@
 import { MaterialIcons } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 import React, { useEffect, useState } from "react";
 import {
+  Button,
   FlatList,
   Image,
+  ScrollView,
   Text,
   TouchableOpacity,
   View,
-  Button,
-  ScrollView,
-  SafeAreaView,
 } from "react-native";
 import Loading from "../components/Loading";
 import { auth } from "../firebase";
 import { styles, width } from "../styles/styles.SingleLocationScreen";
 import {
+  addPhotoToLocation,
   getSingleLocation,
   patchLocation,
-  addPhotoToLocation,
 } from "../utils/api";
 import { checkAdmin } from "../utils/checkAdmin";
-import * as ImagePicker from "expo-image-picker";
 import { uploadImage } from "../utils/imageUploads";
 
 function SingleLocationScreen({ route, navigation }) {
@@ -85,31 +84,21 @@ function SingleLocationScreen({ route, navigation }) {
     setImage(null);
     setVisible(true);
   };
-  const renderLocationProperty = ({ item }) => {
-    return (
-      <View style={styles.propertyItem}>
-        <Text style={styles.propertyName}>{item.name}</Text>
-        <Text style={styles.propertyValue}>{item.value}</Text>
-      </View>
-    );
-  };
 
   const user = auth.currentUser;
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.topContainer}>
         <TouchableOpacity
           style={styles.closeButton}
-          onPress={() => navigation.navigate("HomeScreen")}
-        >
+          onPress={() => navigation.navigate("HomeScreen")}>
           <MaterialIcons name="close" size={24} color="black" />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.flagButton}
           onPress={handleFlagLocation}
-          disabled={location.dangerous ? checkAdmin(user) : false}
-        >
+          disabled={location.dangerous ? checkAdmin(user) : false}>
           <Image
             style={styles.flagIcon}
             source={require("../assets/RedFlag.png")}
@@ -140,46 +129,65 @@ function SingleLocationScreen({ route, navigation }) {
           )}
         />
       </View>
-      <View style={styles.info}>
+      <ScrollView contentContainerStyle={styles.infoContainer}>
         <Text style={styles.title}>{location.location_name}</Text>
-        <FlatList
-          data={[
-            {
-              name: "Depth",
-              value: location.depth ? location.depth : "N/A",
-            },
-            { name: "Public", value: location.public ? "Yes" : "No" },
-            {
-              name: "Water Temperature",
-              value: location.water_temp ? location.water_temp : "N/A",
-            },
-          ]}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={renderLocationProperty}
-        />
-        <ScrollView>
+        <View style={styles.info}>
           <Text style={styles.description}>{location.description}</Text>
-          <Button title="add photo" onPress={() => pickImage(setImage)} />
+          <View style={styles.info_row}>
+            <Text style={styles.info_name}>Depth</Text>
+            <Text style={styles.info_value}>
+              {location.depth ? location.depth : "N/A"}
+            </Text>
+          </View>
+          <View style={styles.info_row}>
+            <Text style={styles.info_name}>Public</Text>
+            <Text style={styles.info_value}>
+              {location.public ? "Yes" : "No"}
+            </Text>
+          </View>
+          <View style={styles.info_row}>
+            <Text style={styles.info_name}>Water Temperature</Text>
+            <Text style={styles.info_value}>
+              {location.water_temp ? location.water_temp : "N/A"}
+            </Text>
+          </View>
+          {!visible ? (
+            <TouchableOpacity
+              style={styles.photoButton}
+              onPress={() => pickImage(setImage)}>
+              <Text>Add Photo</Text>
+            </TouchableOpacity>
+          ) : null}
           {image && (
             <View>
-              <Image source={{ uri: image }} style={{ width: 12, height: 9 }} />
-              <Button
-                title="upload photo"
-                onPress={() => {
-                  handleUploadImage();
+              <Image
+                source={{ uri: image }}
+                style={{
+                  width: 300,
+                  height: 200,
+                  alignSelf: "center",
+                  marginTop: 10,
                 }}
               />
+              <TouchableOpacity
+                style={styles.photoButton}
+                onPress={() => {
+                  handleUploadImage();
+                }}>
+                <Text>Upload Photo</Text>
+              </TouchableOpacity>
             </View>
           )}
           {visible ? (
-            <Button
-              title="post photo"
-              onPress={() => handleAddPhotoToLocation()}
-            />
+            <TouchableOpacity
+              style={styles.photoButton}
+              onPress={() => handleAddPhotoToLocation()}>
+              <Text>Post Photo</Text>
+            </TouchableOpacity>
           ) : null}
-        </ScrollView>
-      </View>
-    </SafeAreaView>
+        </View>
+      </ScrollView>
+    </View>
   );
 }
 
