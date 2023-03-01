@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
     width: "80%",
     height: 450,
     shadowColor: "#000",
+    backgroundColor: "rgba(250, 250, 250, 0.8)",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -63,10 +64,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   button: {
-    marginTop: 20,
+    marginTop: 40,
   },
   disclaimer: {
-    backgroundColor: "white",
     marginBottom: 10,
     width: 280,
     fontWeight: "bold",

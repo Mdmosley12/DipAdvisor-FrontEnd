@@ -19,7 +19,10 @@ function WelcomeScreen({ navigation }) {
           style={styles.logo}
           source={require("../assets/React-icon.png")}
         />
-        <Text style={styles.companyName}>DipAdvisor</Text>
+        <Text style={styles.companyName}>
+          <Text style={styles.dip}>Dip</Text>
+          Advisor
+        </Text>
       </View>
       <TouchableOpacity
         style={styles.loginButton}

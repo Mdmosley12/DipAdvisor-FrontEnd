@@ -15,7 +15,7 @@ function PostLocationCoords({ userLocation, setPinCoords }) {
   if (!userLocation) {
     return (
       <SafeAreaView style={styles.container}>
-        <Text>No user location enabled</Text>
+        <Text>Loading map or no user location</Text>
       </SafeAreaView>
     );
   }

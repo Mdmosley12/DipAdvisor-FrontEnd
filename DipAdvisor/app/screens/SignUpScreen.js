@@ -1,6 +1,13 @@
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
-import { Button, ImageBackground, Text, TextInput, View } from "react-native";
+import {
+  Button,
+  ImageBackground,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { CheckBox } from "react-native-elements";
 import { auth } from "../firebase";
 import { styles } from "../styles/styles.SignUpScreen";
@@ -48,7 +55,12 @@ function SignUpScreen({ navigation }) {
           errors,
           touched,
         }) => (
-          <View style={{ ...styles.container, marginTop: containerMarginTop }}>
+          <View
+            style={{
+              ...styles.loginContainer,
+              marginTop: containerMarginTop,
+            }}
+          >
             <Text style={styles.label}>Email:</Text>
             <TextInput
               style={styles.emailInput}

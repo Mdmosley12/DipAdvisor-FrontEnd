@@ -77,10 +77,12 @@ function MapViewScreen({ navigation }) {
             longitudeDelta: 0.0421,
           }}
           showsUserLocation={true}
+          showsMyLocationButton={false}
           showsScale={true}
           zoomEnabled={true}
           loadingEnabled={true}
-          onCalloutPress={markerClick}>
+          onCalloutPress={markerClick}
+        >
           {mapMarkers.map((marker, index) => {
             if (
               (marker.coordinate.latitude !== undefined && !marker.dangerous) ||
@@ -91,7 +93,8 @@ function MapViewScreen({ navigation }) {
                   key={index}
                   coordinate={marker.coordinate}
                   title={marker.location_name}
-                  onPress={() => handleMarkerPress(marker.id)}>
+                  onPress={() => handleMarkerPress(marker.id)}
+                >
                   {/* //////////////callout section a work in progress
                    Free versions are too slow to render images within map, can uncomment this if upgrade */}
                   {/* {selectedMarker === marker && (
