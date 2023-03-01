@@ -1,13 +1,6 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import React, { useContext, useEffect, useState } from "react";
-import {
-  Alert,
-  FlatList,
-  Image,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import Loading from "../components/Loading";
 import { LocationsContext } from "../contexts/LocationsContext";
 import { auth } from "../firebase";
@@ -16,11 +9,12 @@ import { getSingleLocation, patchLocation } from "../utils/api";
 import { checkAdmin } from "../utils/checkAdmin";
 
 function SingleLocationScreen({ route, navigation }) {
-  const { location_id } = route.params;
-  if (!location_id) return navigation.navigate("HomeScreen");
   const [location, setLocation] = useState({});
   const [loading, setLoading] = useState(true);
   const { setLocations } = useContext(LocationsContext);
+  const { location_id } = route.params;
+  if (!location_id) return navigation.navigate("HomeScreen");
+
   useEffect(() => {
     getSingleLocation(location_id)
       .then((data) => {

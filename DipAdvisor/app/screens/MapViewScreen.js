@@ -74,11 +74,13 @@ function MapViewScreen({ navigation }) {
           showsUserLocation={true}
           showsScale={true}
           zoomEnabled={true}
+          loadingEnabled={true}
           onCalloutPress={markerClick}>
           {mapMarkers.map((marker, index) => {
             if (
-              (marker.coordinate.latitude !== undefined && !marker.dangerous) ||
-              (marker.coordinate.longitude !== undefined && !marker.dangerous)
+              (marker.coordinate.latitude !== undefined &&
+                marker.coordinate.longitude !== undefined) ||
+              !marker.dangerous
             ) {
               return (
                 <Marker

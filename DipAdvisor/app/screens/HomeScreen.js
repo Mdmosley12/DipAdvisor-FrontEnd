@@ -11,13 +11,7 @@ const PopularSpotsBox = ({ popularSpots, navigation }) => {
       <View>
         <Text style={styles.spotsTitle}>Most popular spots:</Text>
       </View>
-      <View
-        style={{
-          flexWrap: "wrap",
-          flex: 1,
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}>
+      <View style={styles.popularSpotsContainer}>
         {popularSpots.map((spot) => {
           return (
             <PopularSpotBox
@@ -64,11 +58,13 @@ const HomeScreen = ({ navigation }) => {
   }, []);
 
   return (
-    <View style={styles.backgroundWelcome}>
-      <Text style={styles.heading}>
-        Where's today's dip {auth.currentUser.displayName}?
-      </Text>
-      <PopularSpotsBox popularSpots={popularSpots} navigation={navigation} />
+    <View style={styles.container}>
+      <View style={styles.backgroundWelcome}>
+        <Text style={styles.heading}>
+          Where's today's dip {auth.currentUser.displayName}?
+        </Text>
+        <PopularSpotsBox popularSpots={popularSpots} navigation={navigation} />
+      </View>
     </View>
   );
 };

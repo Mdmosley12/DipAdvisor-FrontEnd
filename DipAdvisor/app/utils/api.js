@@ -17,7 +17,9 @@ export const patchLocation = (location_id) => {
 };
 
 export const addLocation = (body) => {
+  console.log(body, "axios body received");
   return DipAdvisorAPI.post("/locations", body).then(({ data }) => {
+    console.log(data, "axios data returned");
     return data;
   });
 };
