@@ -25,6 +25,7 @@ import { uploadImage } from "../utils/imageUploads";
 function SingleLocationScreen({ route, navigation }) {
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
+  const [visible, setVisible] = useState(false);
 
   const { location_id } = route.params;
   if (!location_id) return navigation.navigate("HomeScreen");
@@ -74,12 +75,15 @@ function SingleLocationScreen({ route, navigation }) {
         setLocation(data);
         setLoading(false);
         setImage(false);
+        setVisible(false);
       });
     });
   };
 
   const handleUploadImage = () => {
     uploadImage(image, setImageUrl);
+    setImage(null);
+    setVisible(true);
   };
   const renderLocationProperty = ({ item }) => {
     return (
@@ -155,23 +159,24 @@ function SingleLocationScreen({ route, navigation }) {
         />
         <ScrollView>
           <Text style={styles.description}>{location.description}</Text>
-          <Button title="add pic" onPress={() => pickImage(setImage)} />
+          <Button title="add photo" onPress={() => pickImage(setImage)} />
           {image && (
             <View>
               <Image source={{ uri: image }} style={{ width: 12, height: 9 }} />
               <Button
-                title="upload image"
+                title="upload photo"
                 onPress={() => {
                   handleUploadImage();
                 }}
               />
             </View>
           )}
-
-          <Button
-            title="add image to location"
-            onPress={() => handleAddPhotoToLocation()}
-          />
+          {visible ? (
+            <Button
+              title="post photo"
+              onPress={() => handleAddPhotoToLocation()}
+            />
+          ) : null}
         </ScrollView>
       </View>
     </SafeAreaView>
