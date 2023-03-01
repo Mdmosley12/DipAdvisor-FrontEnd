@@ -23,7 +23,7 @@ import * as ImagePicker from "expo-image-picker";
 import { uploadImage } from "../utils/imageUploads";
 
 function SingleLocationScreen({ route, navigation }) {
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
 
   const { location_id } = route.params;
@@ -41,7 +41,7 @@ function SingleLocationScreen({ route, navigation }) {
         alert(error.message);
         navigation.navigate("HomeScreen");
       });
-  }, [location_id]);
+  }, [location_id, handleAddPhotoToLocation]);
 
   const pickImage = async (setImage) => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -69,9 +69,18 @@ function SingleLocationScreen({ route, navigation }) {
   const handleAddPhotoToLocation = () => {
     const body = { url: imageUrl };
     console.log(body);
-    addPhotoToLocation(body, location_id);
+    addPhotoToLocation(body, location_id).then(() => {
+      getSingleLocation(location_id).then((data) => {
+        setLocation(data);
+        setLoading(false);
+        setImage(false);
+      });
+    });
   };
 
+  const handleUploadImage = () => {
+    uploadImage(image, setImageUrl);
+  };
   const renderLocationProperty = ({ item }) => {
     return (
       <View style={styles.propertyItem}>
@@ -153,15 +162,16 @@ function SingleLocationScreen({ route, navigation }) {
               <Button
                 title="upload image"
                 onPress={() => {
-                  uploadImage(image, setImageUrl);
+                  handleUploadImage();
                 }}
-              />
-              <Button
-                title="add image to location"
-                onPress={() => handleAddPhotoToLocation()}
               />
             </View>
           )}
+
+          <Button
+            title="add image to location"
+            onPress={() => handleAddPhotoToLocation()}
+          />
         </ScrollView>
       </View>
     </SafeAreaView>

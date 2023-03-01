@@ -41,15 +41,15 @@ function AddLocationScreen({ navigation }) {
     values.coordinates = [54.449505, -3.284804];
     values.image_urls = [imageURL];
 
-    addLocation(values)
-      .then(({ location }) => {
-        const locationID = { location_id: location[0]._id };
-        navigation.navigate("SingleLocationScreen", locationID);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    console.log(values);
+    addLocation(values).then(({ location }) => {
+      console.log(values, "values in the handle post block");
+      const locationID = { location_id: location[0]._id };
+      navigation.navigate("SingleLocationScreen", locationID);
+      setVisible(false);
+    });
+    // .catch((err) => {
+    //   console.log(err);
+    // });
   };
   const pickImage = async (setImage) => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -65,9 +65,10 @@ function AddLocationScreen({ navigation }) {
   };
 
   const uploadImageHandler = () => {
-    uploadImage(image, setImageURL);
-    setVisible(true);
-    console.log(visible);
+    uploadImage(image, setImageURL).then(() => {
+      setImage(null);
+      setVisible(true);
+    });
   };
   return (
     <ImageBackground
@@ -132,7 +133,7 @@ function AddLocationScreen({ navigation }) {
                     />
                     <Button
                       title="upload image"
-                      onPress={() => uploadImageHandler}
+                      onPress={() => uploadImageHandler()}
                     ></Button>
                   </View>
                 )}
@@ -155,11 +156,13 @@ function AddLocationScreen({ navigation }) {
                     express permission to swim from the land owner.
                   </Text>
                 ) : null}
-                <Button
-                  style={styles.button}
-                  onPress={handleSubmit}
-                  title="Add Location"
-                />
+                {visible ? (
+                  <Button
+                    style={styles.button}
+                    onPress={handleSubmit}
+                    title="Add Location"
+                  />
+                ) : null}
               </View>
             )}
           </Formik>
