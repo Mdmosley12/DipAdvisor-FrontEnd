@@ -8,7 +8,6 @@ import {
   Image,
   ImageBackground,
   ScrollView,
-  Image,
 } from "react-native";
 import { Formik } from "formik";
 import { Switch } from "react-native";
@@ -27,16 +26,6 @@ function AddLocationScreen({ navigation }) {
   const [image, setImage] = useState(null);
   const [imageURL, setImageURL] = useState("");
   const [visible, setVisible] = useState(false);
-
-  const validationSchema = Yup.object().shape({
-    location_name: Yup.string()
-      .min(2, "Too short!")
-      .max(20, "Too long!")
-      .required("Location name required"),
-    description: Yup.string()
-      .min(5, "Too short!")
-      .max(200, "Too long!")
-      .required("Brief description required"),
   const [userLocation, setUserLocation] = useState(null);
   const [pinCoords, setPinCoords] = useState({
     latitude: 51.146592,
@@ -57,39 +46,21 @@ function AddLocationScreen({ navigation }) {
     })();
   }, []);
 
-  const handlePost = async (values) => {
-    await uploadImage(image, setImageURL).then(() => {
-      values.created_by = auth.currentUser.email;
-      values.image_urls = [imageURL];
-      values.coordinates = [pinCoords.latitude, pinCoords.longitude];
-      addLocation(values).then(({ location }) => {
-        console.log(values, "<<<add location in next .then ");
-        const locationID = { location_id: location[0]._id };
-        navigation.navigate("SingleLocationScreen", {
-          location_id: locationID,
-        });
-      });
-
-      //getting Alert - Request failed with status code 400 up on phone after adding.
-      //Is uploading to database and adding to map.
-      //resetForm();
   const handlePost = (values) => {
     values.created_by = auth.currentUser.email;
-    values.coordinates = [54.449505, -3.284804];
+    values.coordinates = [pinCoords.latitude, pinCoords.longitude];
     values.image_urls = [imageURL];
 
-    addLocation(values).then(({ location }) => {
-      console.log(values, "values in the handle post block");
-      const locationID = { location_id: location[0]._id };
-      navigation.navigate("SingleLocationScreen", locationID);
-      setVisible(false);
-    });
-    // .catch((err) => {
-    //   console.log(err);
-    // });
+    addLocation(values)
+      .then(({ location }) => {
+        const locationID = { location_id: location[0]._id };
+        navigation.navigate("SingleLocationScreen", locationID);
+        setVisible(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
-
-  console.log(imageURL, "<<< image url useState outside handlePost");
 
   const pickImage = async (setImage) => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -102,7 +73,6 @@ function AddLocationScreen({ navigation }) {
       setImage(result.assets[0].uri);
     }
   };
-
 
   const uploadImageHandler = () => {
     uploadImage(image, setImageURL).then(() => {
