@@ -8,12 +8,12 @@ import { auth } from "../firebase";
 import styles from "../styles/styles.MapViewScreen";
 
 function MapViewScreen({ navigation }) {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [mapMarkers, setMapMarkers] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [selectedMarker, setSelectedMarker] = useState(null);
-  const { locations } = useContext(LocationsContext);
+  const { locations, updatedView } = useContext(LocationsContext);
 
   // gets user location at start, asks for permission if not already granted
   useEffect(() => {
@@ -30,7 +30,7 @@ function MapViewScreen({ navigation }) {
   }, []);
 
   useEffect(() => {
-    setLoading(true);
+    updatedView();
     const allCoordinates = locations.map((location) => {
       return {
         id: location._id,
@@ -45,7 +45,7 @@ function MapViewScreen({ navigation }) {
     });
     setMapMarkers(allCoordinates);
     setLoading(false);
-  }, [locations]);
+  }, [locations, updatedView]);
 
   const handleMarkerPress = (markerid) => {
     setSelectedMarker(markerid);

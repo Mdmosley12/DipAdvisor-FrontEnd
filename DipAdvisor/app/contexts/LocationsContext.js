@@ -10,10 +10,16 @@ export const LocationsProvider = ({ children }) => {
     getAllLocations().then((data) => {
       setLocations(data);
     });
-  }, [locations]);
+  }, []);
+
+  const updatedView = () => {
+    getAllLocations().then((data) => {
+      setLocations(data);
+    });
+  };
 
   return (
-    <LocationsContext.Provider value={{ locations, setLocations }}>
+    <LocationsContext.Provider value={{ locations, setLocations, updatedView }}>
       {children}
     </LocationsContext.Provider>
   );
