@@ -4,9 +4,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    width: Dimensions.get("window").width,
+    width: "80%",
     height: Dimensions.get("window").height / 3,
-    marginTop: 20,
+    marginBottom: 20,
   },
   map: {
     ...StyleSheet.absoluteFillObject,

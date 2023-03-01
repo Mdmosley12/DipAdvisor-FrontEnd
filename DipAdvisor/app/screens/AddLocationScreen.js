@@ -50,16 +50,19 @@ function AddLocationScreen({ navigation }) {
     values.created_by = auth.currentUser.email;
     values.coordinates = [pinCoords.latitude, pinCoords.longitude];
     values.image_urls = [imageURL];
-
-    addLocation(values)
-      .then(({ location }) => {
-        const locationID = { location_id: location[0]._id };
-        navigation.navigate("SingleLocationScreen", locationID);
-        setVisible(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (values.coordinates[0] !== undefined) {
+      addLocation(values)
+        .then(({ location }) => {
+          const locationID = { location_id: location[0]._id };
+          navigation.navigate("SingleLocationScreen", locationID);
+          setVisible(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      alert("Please drag pin to new location");
+    }
   };
 
   const pickImage = async (setImage) => {
@@ -81,19 +84,9 @@ function AddLocationScreen({ navigation }) {
     });
   };
   return (
-    <ImageBackground
-      style={styles.background}
-      source={require("../assets/WelcomeScreenImg.jpg")}
-    >
+    <ImageBackground source={require("../assets/WelcomeScreenImg.jpg")}>
       <ScrollView>
         <KeyboardAvoidingView style={styles.background}>
-          <Text style={styles.label} multiline={true}>
-            Hold pin to drag to swim location.
-          </Text>
-          <PostLocationCoords
-            setPinCoords={setPinCoords}
-            userLocation={userLocation}
-          />
           <Formik
             validationSchema={addLocationValidationSchema}
             initialValues={{
@@ -146,16 +139,21 @@ function AddLocationScreen({ navigation }) {
                   </Text>
                 ) : null}
 
+                <Text style={styles.label} multiline={true}>
+                  Hold pin and drag to location.
+                </Text>
+                <PostLocationCoords
+                  style={styles.map}
+                  setPinCoords={setPinCoords}
+                  userLocation={userLocation}
+                />
                 <Button
                   title="Select photo"
                   onPress={() => pickImage(setImage)}
                 />
                 {image && (
                   <View>
-                    <Image
-                      source={{ uri: image }}
-                      style={{ width: 200, height: 200 }}
-                    />
+                    <Image source={{ uri: image }} style={styles.image} />
                     <Button
                       title="upload image"
                       onPress={() => uploadImageHandler()}
@@ -163,7 +161,7 @@ function AddLocationScreen({ navigation }) {
                   </View>
                 )}
 
-                <Text style={styles.label}>
+                <Text style={styles.publicTitle}>
                   Is this location on public land?
                 </Text>
 
@@ -178,10 +176,13 @@ function AddLocationScreen({ navigation }) {
                   <Text style={styles.yes}>Yes</Text>
                 </View>
 
-                {!values.public ? (
+                {!image && !imageURL ? (
                   <Text style={styles.privateWarning}>
-                    By clicking "Add Location", I confirm I have recieved
-                    express permission to swim from the land owner.
+                    Please Select Photo to Add Location
+                  </Text>
+                ) : image ? (
+                  <Text style={styles.privateWarning}>
+                    Please Upload Image to Add Location
                   </Text>
                 ) : null}
                 {visible ? (
