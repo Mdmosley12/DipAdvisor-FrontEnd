@@ -1,16 +1,34 @@
 import { MaterialIcons } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 import React, { useContext, useEffect, useState } from "react";
-import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import {
+  Button,
+  FlatList,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Loading from "../components/Loading";
 import { LocationsContext } from "../contexts/LocationsContext";
 import { auth } from "../firebase";
 import { styles, width } from "../styles/styles.SingleLocationScreen";
-import { getSingleLocation, patchLocation } from "../utils/api";
+import {
+  addPhotoToLocation,
+  getSingleLocation,
+  patchLocation,
+} from "../utils/api";
 import { checkAdmin } from "../utils/checkAdmin";
+import { uploadImage } from "../utils/imageUploads";
 
 function SingleLocationScreen({ route, navigation }) {
   const [location, setLocation] = useState({});
   const [loading, setLoading] = useState(true);
+  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
+  const [visible, setVisible] = useState(false);
+
   const { location_id } = route.params;
   if (!location_id) return navigation.navigate("HomeScreen");
 
@@ -24,7 +42,20 @@ function SingleLocationScreen({ route, navigation }) {
         alert(error.message);
         navigation.navigate("HomeScreen");
       });
-  }, [location_id]);
+  }, [location_id, handleAddPhotoToLocation]);
+
+  const pickImage = async (setImage) => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
 
   const handleFlagLocation = () => {
     patchLocation(location_id).then((data) => {
@@ -36,13 +67,23 @@ function SingleLocationScreen({ route, navigation }) {
     return <Loading />;
   }
 
-  const renderLocationProperty = ({ item }) => {
-    return (
-      <View style={styles.propertyItem}>
-        <Text style={styles.propertyName}>{item.name}</Text>
-        <Text style={styles.propertyValue}>{item.value}</Text>
-      </View>
-    );
+  const handleAddPhotoToLocation = () => {
+    const body = { url: imageUrl };
+    console.log(body);
+    addPhotoToLocation(body, location_id).then(() => {
+      getSingleLocation(location_id).then((data) => {
+        setLocation(data);
+        setLoading(false);
+        setImage(false);
+        setVisible(false);
+      });
+    });
+  };
+
+  const handleUploadImage = () => {
+    uploadImage(image, setImageUrl);
+    setImage(null);
+    setVisible(true);
   };
 
   const user = auth.currentUser;
@@ -52,13 +93,15 @@ function SingleLocationScreen({ route, navigation }) {
       <View style={styles.topContainer}>
         <TouchableOpacity
           style={styles.closeButton}
-          onPress={() => navigation.navigate("HomeScreen")}>
+          onPress={() => navigation.navigate("HomeScreen")}
+        >
           <MaterialIcons name="close" size={24} color="black" />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.flagButton}
           onPress={handleFlagLocation}
-          disabled={location.dangerous ? checkAdmin(user) : false}>
+          disabled={location.dangerous ? checkAdmin(user) : false}
+        >
           <Image
             style={styles.flagIcon}
             source={require("../assets/RedFlag.png")}
@@ -91,24 +134,67 @@ function SingleLocationScreen({ route, navigation }) {
           )}
         />
       </View>
-      <View style={styles.info}>
+      <ScrollView contentContainerStyle={styles.infoContainer}>
         <Text style={styles.title}>{location.location_name}</Text>
-        <Text style={styles.description}>{location.description}</Text>
-        <View style={styles.propertiesList}>
-          <FlatList
-            data={[
-              { name: "Depth", value: location.depth ? location.depth : "N/A" },
-              { name: "Public", value: location.public ? "Yes" : "No" },
-              {
-                name: "Water Temperature",
-                value: location.water_temp ? location.water_temp : "N/A",
-              },
-            ]}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={renderLocationProperty}
-          />
+        <View style={styles.info}>
+          <Text style={styles.description}>{location.description}</Text>
+          <View style={styles.info_row}>
+            <Text style={styles.info_name}>Depth</Text>
+            <Text style={styles.info_value}>
+              {location.depth ? location.depth : "N/A"}
+            </Text>
+          </View>
+          <View style={styles.info_row}>
+            <Text style={styles.info_name}>Public</Text>
+            <Text style={styles.info_value}>
+              {location.public ? "Yes" : "No"}
+            </Text>
+          </View>
+          <View style={styles.info_row}>
+            <Text style={styles.info_name}>Water Temperature</Text>
+            <Text style={styles.info_value}>
+              {location.water_temp ? location.water_temp : "N/A"}
+            </Text>
+          </View>
+          {!visible ? (
+            <TouchableOpacity
+              style={styles.photoButton}
+              onPress={() => pickImage(setImage)}
+            >
+              <Text>Add Photo</Text>
+            </TouchableOpacity>
+          ) : null}
+          {image && (
+            <View>
+              <Image
+                source={{ uri: image }}
+                style={{
+                  width: 300,
+                  height: 200,
+                  alignSelf: "center",
+                  marginTop: 10,
+                }}
+              />
+              <TouchableOpacity
+                style={styles.photoButton}
+                onPress={() => {
+                  handleUploadImage();
+                }}
+              >
+                <Text>Upload Photo</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          {visible ? (
+            <TouchableOpacity
+              style={styles.photoButton}
+              onPress={() => handleAddPhotoToLocation()}
+            >
+              <Text>Post Photo</Text>
+            </TouchableOpacity>
+          ) : null}
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }

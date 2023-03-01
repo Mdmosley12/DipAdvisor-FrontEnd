@@ -25,6 +25,7 @@ import PostLocationCoords from "./PostLocationCoords";
 function AddLocationScreen({ navigation }) {
   const [image, setImage] = useState(null);
   const [imageURL, setImageURL] = useState("");
+  const [visible, setVisible] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
   const [pinCoords, setPinCoords] = useState({
     latitude: 51.146592,
@@ -45,26 +46,21 @@ function AddLocationScreen({ navigation }) {
     })();
   }, []);
 
-  const handlePost = async (values) => {
-    await uploadImage(image, setImageURL).then(() => {
-      values.created_by = auth.currentUser.email;
-      values.image_urls = [imageURL];
-      values.coordinates = [pinCoords.latitude, pinCoords.longitude];
-      addLocation(values).then(({ location }) => {
-        console.log(values, "<<<add location in next .then ");
+  const handlePost = (values) => {
+    values.created_by = auth.currentUser.email;
+    values.coordinates = [pinCoords.latitude, pinCoords.longitude];
+    values.image_urls = [imageURL];
+
+    addLocation(values)
+      .then(({ location }) => {
         const locationID = { location_id: location[0]._id };
-        navigation.navigate("SingleLocationScreen", {
-          location_id: locationID,
-        });
+        navigation.navigate("SingleLocationScreen", locationID);
+        setVisible(false);
+      })
+      .catch((err) => {
+        console.log(err);
       });
-
-      //getting Alert - Request failed with status code 400 up on phone after adding.
-      //Is uploading to database and adding to map.
-      //resetForm();
-    });
   };
-
-  console.log(imageURL, "<<< image url useState outside handlePost");
 
   const pickImage = async (setImage) => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -78,6 +74,12 @@ function AddLocationScreen({ navigation }) {
     }
   };
 
+  const uploadImageHandler = () => {
+    uploadImage(image, setImageURL).then(() => {
+      setImage(null);
+      setVisible(true);
+    });
+  };
   return (
     <ImageBackground
       style={styles.background}
@@ -149,10 +151,16 @@ function AddLocationScreen({ navigation }) {
                   onPress={() => pickImage(setImage)}
                 />
                 {image && (
-                  <Image
-                    source={{ uri: image }}
-                    style={{ width: 200, height: 200 }}
-                  />
+                  <View>
+                    <Image
+                      source={{ uri: image }}
+                      style={{ width: 200, height: 200 }}
+                    />
+                    <Button
+                      title="upload image"
+                      onPress={() => uploadImageHandler()}
+                    ></Button>
+                  </View>
                 )}
 
                 <Text style={styles.label}>
@@ -176,12 +184,13 @@ function AddLocationScreen({ navigation }) {
                     express permission to swim from the land owner.
                   </Text>
                 ) : null}
-
-                <Button
-                  style={styles.button}
-                  onPress={handleSubmit}
-                  title="Add Location"
-                />
+                {visible ? (
+                  <Button
+                    style={styles.button}
+                    onPress={handleSubmit}
+                    title="Add Location"
+                  />
+                ) : null}
               </View>
             )}
           </Formik>

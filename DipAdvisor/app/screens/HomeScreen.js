@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { auth } from "../firebase";
 import { styles } from "../styles/styles.HomeScreen";
-
 import {
   Image,
   ScrollView,

@@ -47,21 +47,39 @@ const styles = StyleSheet.create({
     color: "black",
   },
   imageGrid: {
-    height: 300,
+    marginTop: 100,
+    height: width / 2,
     width: width,
     backgroundColor: "#EFEFEF",
   },
   imageItem: {
     width: width,
-    height: 300,
+    height: width / 2,
   },
   image: {
     width: "100%",
     height: "100%",
   },
+  infoContainer: {
+    width: width,
+  },
   info: {
-    padding: 20,
-    width: "100%",
+    flexDirection: "column",
+    marginVertical: 10,
+    width: "98%",
+  },
+  info_row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 5,
+  },
+  info_name: {
+    fontWeight: "bold",
+    flex: 1,
+  },
+  info_value: {
+    flex: 1,
+    textAlign: "right",
   },
   title: {
     fontSize: 24,
@@ -88,6 +106,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   propertyValue: {
+    fontSize: 16,
+  },
+  photoButton: {
+    backgroundColor: "#4287f5",
+    padding: 10,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 10,
+    height: 50,
+    width: 150,
+    alignSelf: "center",
+  },
+  photoText: {
+    color: "#fff",
+    fontWeight: "bold",
     fontSize: 16,
   },
 });
