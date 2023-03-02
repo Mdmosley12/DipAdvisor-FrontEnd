@@ -15,6 +15,7 @@ const PopularSpotsBox = ({ popularSpots, navigation }) => {
   return (
     <ScrollView>
       <View style={styles.popularSpotsContainer}>
+        <Text style={styles.spotsTitle}>Most popular spots:</Text>
         {popularSpots.map((spot) => {
           return (
             <PopularSpotBox
@@ -65,15 +66,13 @@ const HomeScreen = ({ navigation }) => {
       style={styles.background}
       source={require("../assets/WelcomeScreenImg.jpg")}
     >
-      {/* <View style={styles.container}> */}
       <View style={styles.backgroundWelcome}>
         <Text style={styles.heading}>
           Where's today's dip {auth.currentUser.displayName}?
         </Text>
-        <Text style={styles.spotsTitle}>Most popular spots:</Text>
+        {/* <Text style={styles.spotsTitle}>Most popular spots:</Text> */}
         <PopularSpotsBox popularSpots={popularSpots} navigation={navigation} />
       </View>
-      {/* </View> */}
     </ImageBackground>
   );
 };
