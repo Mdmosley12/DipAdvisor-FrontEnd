@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   loginContainer: {
     borderRadius: 8,
     width: "80%",
-    height: 450,
+    height: "auto",
     shadowColor: "#000",
     backgroundColor: "rgba(250, 250, 250, 0.8)",
     shadowOffset: {

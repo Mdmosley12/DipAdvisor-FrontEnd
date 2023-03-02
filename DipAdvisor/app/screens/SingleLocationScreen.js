@@ -5,6 +5,7 @@ import {
   Button,
   FlatList,
   Image,
+  ImageBackground,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -89,7 +90,10 @@ function SingleLocationScreen({ route, navigation }) {
   const user = auth.currentUser;
 
   return (
-    <View style={styles.container}>
+    <ImageBackground
+      source={require("../assets/WelcomeScreenImg.jpg")}
+      style={styles.background}
+    >
       <View style={styles.topContainer}>
         <TouchableOpacity
           style={styles.closeButton}
@@ -111,91 +115,93 @@ function SingleLocationScreen({ route, navigation }) {
           </Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.imageGrid}>
+      <View style={styles.container}>
         {location.dangerous ? <Text>This Location is DANGEROUS</Text> : <></>}
-        <FlatList
-          data={[...new Set(location.image_urls)]}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(index) => index.toString()}
-          snapToInterval={width}
-          decelerationRate="fast"
-          pagingEnabled
-          renderItem={({ item }) => (
-            <View style={styles.imageItem}>
-              <Image
-                style={styles.image}
-                source={{
-                  uri: item ? item : "https://via.placeholder.com/160x160",
-                }}
-                resizeMode="stretch"
-              />
+        <View style={styles.imageGrid}>
+          <FlatList
+            data={[...new Set(location.image_urls)]}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(index) => index.toString()}
+            snapToInterval={width}
+            decelerationRate="fast"
+            pagingEnabled
+            renderItem={({ item }) => (
+              <View style={styles.imageItem}>
+                <Image
+                  style={styles.image}
+                  source={{
+                    uri: item ? item : "https://via.placeholder.com/160x160",
+                  }}
+                  resizeMode="stretch"
+                />
+              </View>
+            )}
+          />
+        </View>
+        <ScrollView contentContainerStyle={styles.infoContainer}>
+          <Text style={styles.title}>{location.location_name}</Text>
+          <View style={styles.info}>
+            <Text style={styles.description}>{location.description}</Text>
+            <View style={styles.info_row}>
+              <Text style={styles.info_name}>Depth</Text>
+              <Text style={styles.info_value}>
+                {location.depth ? location.depth : "N/A"}
+              </Text>
             </View>
-          )}
-        />
-      </View>
-      <ScrollView contentContainerStyle={styles.infoContainer}>
-        <Text style={styles.title}>{location.location_name}</Text>
-        <View style={styles.info}>
-          <Text style={styles.description}>{location.description}</Text>
-          <View style={styles.info_row}>
-            <Text style={styles.info_name}>Depth</Text>
-            <Text style={styles.info_value}>
-              {location.depth ? location.depth : "N/A"}
-            </Text>
-          </View>
-          <View style={styles.info_row}>
-            <Text style={styles.info_name}>Public</Text>
-            <Text style={styles.info_value}>
-              {location.public ? "Yes" : "No"}
-            </Text>
-          </View>
-          <View style={styles.info_row}>
-            <Text style={styles.info_name}>Water Temperature</Text>
-            <Text style={styles.info_value}>
-              {location.water_temp ? location.water_temp : "N/A"}
-            </Text>
-          </View>
-          {!visible ? (
-            <TouchableOpacity
-              style={styles.photoButton}
-              onPress={() => pickImage(setImage)}
-            >
-              <Text>Add Photo</Text>
-            </TouchableOpacity>
-          ) : null}
-          {image && (
-            <View>
-              <Image
-                source={{ uri: image }}
-                style={{
-                  width: 300,
-                  height: 200,
-                  alignSelf: "center",
-                  marginTop: 10,
-                }}
-              />
+            <View style={styles.info_row}>
+              <Text style={styles.info_name}>Public</Text>
+              <Text style={styles.info_value}>
+                {location.public ? "Yes" : "No"}
+              </Text>
+            </View>
+            <View style={styles.info_row}>
+              <Text style={styles.info_name}>Water Temperature</Text>
+              <Text style={styles.info_value}>
+                {location.water_temp ? location.water_temp : "N/A"}
+              </Text>
+            </View>
+            {!visible ? (
               <TouchableOpacity
                 style={styles.photoButton}
-                onPress={() => {
-                  handleUploadImage();
-                }}
+                onPress={() => pickImage(setImage)}
               >
-                <Text>Upload Photo</Text>
+                <Text>Add Photo</Text>
               </TouchableOpacity>
-            </View>
-          )}
-          {visible ? (
-            <TouchableOpacity
-              style={styles.photoButton}
-              onPress={() => handleAddPhotoToLocation()}
-            >
-              <Text>Post Photo</Text>
-            </TouchableOpacity>
-          ) : null}
-        </View>
-      </ScrollView>
-    </View>
+            ) : null}
+            {image && (
+              <View>
+                <Image
+                  source={{ uri: image }}
+                  style={{
+                    width: 300,
+                    height: 200,
+                    alignSelf: "center",
+                    marginTop: 10,
+                  }}
+                />
+                <TouchableOpacity
+                  style={styles.photoButton}
+                  onPress={() => {
+                    handleUploadImage();
+                  }}
+                >
+                  <Text>Upload Photo</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            {visible ? (
+              <TouchableOpacity
+                style={styles.photoButton}
+                onPress={() => handleAddPhotoToLocation()}
+              >
+                <Text>Post Photo</Text>
+              </TouchableOpacity>
+            ) : null}
+          </View>
+        </ScrollView>
+      </View>
+    </ImageBackground>
   );
 }
 

@@ -4,11 +4,13 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     alignItems: "center",
-    padding: 20,
+    marginTop: 10,
+    justifyContent: "center",
   },
   formContainer: {
+    flex: 1,
     backgroundColor: "#4ecdc4",
-    width: "100%",
+    width: "90%",
     marginTop: 50,
     borderRadius: 8,
     shadowColor: "#000",
@@ -22,13 +24,15 @@ const styles = StyleSheet.create({
     elevation: 5,
     alignItems: "center",
     paddingVertical: 20,
-    paddingHorizontal: 20,
+    // paddingHorizontal: 20,
+    backgroundColor: "rgba(250, 250, 250, 0.8)",
   },
   label: {
     alignSelf: "flex-start",
     marginBottom: 5,
     fontSize: 20,
     fontWeight: "bold",
+    paddingLeft: 40,
   },
   location_nameInput: {
     height: 40,
@@ -76,6 +80,22 @@ const styles = StyleSheet.create({
     color: "red",
     paddingBottom: 10,
     fontStyle: "italic",
+  },
+  map: {
+    width: "80%",
+  },
+  publicTitle: {
+    alignSelf: "flex-start",
+    marginBottom: 10,
+    marginTop: 10,
+    fontSize: 20,
+    fontWeight: "bold",
+    paddingLeft: 40,
+  },
+  image: {
+    width: 280,
+    height: 200,
+    marginTop: 15,
   },
 });
 
