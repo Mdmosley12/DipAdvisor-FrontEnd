@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 20,
     paddingHorizontal: 20,
-    marginTop: 30,
+    marginTop: 15,
   },
   topContainer: {
     flexDirection: "row",
@@ -142,8 +142,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 10,
-    height: 50,
-    width: 150,
     alignSelf: "center",
   },
   photoText: {

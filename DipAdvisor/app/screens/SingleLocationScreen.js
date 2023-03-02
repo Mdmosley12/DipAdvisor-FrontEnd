@@ -92,20 +92,17 @@ function SingleLocationScreen({ route, navigation }) {
   return (
     <ImageBackground
       source={require("../assets/WelcomeScreenImg.jpg")}
-      style={styles.background}
-    >
+      style={styles.background}>
       <View style={styles.topContainer}>
         <TouchableOpacity
           style={styles.closeButton}
-          onPress={() => navigation.navigate("HomeScreen")}
-        >
+          onPress={() => navigation.navigate("HomeScreen")}>
           <MaterialIcons name="close" size={24} color="black" />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.flagButton}
           onPress={handleFlagLocation}
-          disabled={location.dangerous ? checkAdmin(user) : false}
-        >
+          disabled={location.dangerous ? checkAdmin(user) : false}>
           <Image
             style={styles.flagIcon}
             source={require("../assets/RedFlag.png")}
@@ -161,16 +158,21 @@ function SingleLocationScreen({ route, navigation }) {
                 {location.water_temp ? location.water_temp : "N/A"}
               </Text>
             </View>
-            {!visible ? (
+            {!visible && !image ? (
               <TouchableOpacity
                 style={styles.photoButton}
-                onPress={() => pickImage(setImage)}
-              >
+                onPress={() => pickImage(setImage)}>
                 <Text>Add Photo</Text>
               </TouchableOpacity>
-            ) : null}
-            {image && (
+            ) : !visible && image ? (
               <View>
+                <TouchableOpacity
+                  style={styles.photoButton}
+                  onPress={() => {
+                    handleUploadImage();
+                  }}>
+                  <Text>Upload Photo</Text>
+                </TouchableOpacity>
                 <Image
                   source={{ uri: image }}
                   style={{
@@ -180,21 +182,12 @@ function SingleLocationScreen({ route, navigation }) {
                     marginTop: 10,
                   }}
                 />
-                <TouchableOpacity
-                  style={styles.photoButton}
-                  onPress={() => {
-                    handleUploadImage();
-                  }}
-                >
-                  <Text>Upload Photo</Text>
-                </TouchableOpacity>
               </View>
-            )}
+            ) : null}
             {visible ? (
               <TouchableOpacity
                 style={styles.photoButton}
-                onPress={() => handleAddPhotoToLocation()}
-              >
+                onPress={() => handleAddPhotoToLocation()}>
                 <Text>Post Photo</Text>
               </TouchableOpacity>
             ) : null}
