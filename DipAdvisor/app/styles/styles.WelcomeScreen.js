@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 30,
-    marginBottom: 150,
+    marginBottom: 120,
     borderColor: "white",
     borderStyle: "solid",
     borderWidth: 2,
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   dip: {
-    // color: "#40b2b0",
+    color: "#40b2b0",
     fontSize: 42,
   },
   loginText: {

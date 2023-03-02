@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { styles } from "../styles/styles.WelcomeScreen";
+import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 
 function WelcomeScreen({ navigation }) {
   return (
@@ -15,9 +16,17 @@ function WelcomeScreen({ navigation }) {
       source={require("../assets/WelcomeScreenImg.jpg")}
     >
       <View style={styles.logoContainer}>
-        <Image
-          style={styles.logo}
-          source={require("../assets/React-icon.png")}
+        <FontAwesome name="circle" size={200} color="rgba(0,0,0,0.4)" />
+        <MaterialCommunityIcons
+          name="diving-snorkel"
+          size={100}
+          style={{
+            position: "absolute",
+            justifyContent: "center",
+            alignContent: "center",
+            margin: "25%",
+            color: "#40b2b0",
+          }}
         />
         <Text style={styles.companyName}>
           <Text style={styles.dip}>Dip</Text>

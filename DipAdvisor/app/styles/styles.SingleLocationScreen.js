@@ -4,23 +4,43 @@ import { Dimensions } from "react-native";
 const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
     flex: 1,
-    alignItems: "flex-start",
-    justifyContent: "center",
-    position: "relative",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    flexDirection: "column",
+  },
+  container: {
+    borderRadius: 8,
+    width: "90%",
+    height: "auto",
+    shadowColor: "#000",
+    backgroundColor: "rgba(250, 250, 250, 0.8)",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+    alignItems: "center",
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    marginTop: 30,
   },
   topContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: width,
+    width: "100%",
     paddingHorizontal: 20,
-    paddingTop: 20,
-    position: "absolute",
-    top: 0,
-    left: 0,
-    zIndex: 2,
+    marginTop: 30,
+    // position: "absolute",
+    // top: 0,
+    // left: 0,
+    // zIndex: 2,
+    // backgroundColor: "blue",
   },
   closeButton: {
     backgroundColor: "white",
@@ -47,26 +67,29 @@ const styles = StyleSheet.create({
     color: "black",
   },
   imageGrid: {
-    marginTop: 100,
-    height: width / 2,
-    width: width,
-    backgroundColor: "#EFEFEF",
+    marginTop: 10,
+    // height: width / 2,
+    width: "100%",
+    // borderRadius: 20,
+    // backgroundColor: "#EFEFEF",
   },
   imageItem: {
     width: width,
     height: width / 2,
+    // borderRadius: 20,
   },
   image: {
     width: "100%",
     height: "100%",
+    borderRadius: 20,
   },
   infoContainer: {
-    width: width,
+    // width: width,
   },
   info: {
     flexDirection: "column",
-    marginVertical: 10,
-    width: "98%",
+    // marginVertical: 10,
+    // width: "98%",
   },
   info_row: {
     flexDirection: "row",
@@ -76,14 +99,18 @@ const styles = StyleSheet.create({
   info_name: {
     fontWeight: "bold",
     flex: 1,
+    fontSize: 15,
   },
   info_value: {
     flex: 1,
     textAlign: "right",
+    fontSize: 15,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
+    // marginBottom: 10,
+    marginTop: 10,
     marginBottom: 10,
   },
   description: {
