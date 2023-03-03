@@ -77,7 +77,7 @@ function MapViewScreen({ navigation }) {
             longitudeDelta: 0.0421,
           }}
           showsUserLocation={true}
-          showsMyLocationButton={false}
+          showsMyLocationButton={true}
           showsScale={true}
           zoomEnabled={true}
           loadingEnabled={true}
